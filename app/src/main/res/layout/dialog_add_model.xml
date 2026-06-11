@@ -13,15 +13,12 @@
         android:hint="Model Name"
         app:boxStrokeColor="@color/text_input_box_stroke_selector"
         app:hintTextColor="@android:color/white"
-
         android:textColorHint="@android:color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editModelName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-
             android:textColor="@android:color/white"
             />
     </com.google.android.material.textfield.TextInputLayout>
@@ -30,19 +27,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="API Identifier"
-
         android:layout_marginTop="8dp"
         app:boxStrokeColor="@color/text_input_box_stroke_selector"
-
         app:hintTextColor="@android:color/white"
-
         android:textColorHint="@android:color/white">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editApiIdentifier"
             android:layout_width="match_parent"
-
-
             android:layout_height="wrap_content"
             android:textColor="@android:color/white"
             />
@@ -77,11 +69,15 @@
         android:text="Image Generation" />
 
     <com.google.android.material.materialswitch.MaterialSwitch
+        android:id="@+id/switchTranscription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Transcription" />
+
+    <com.google.android.material.materialswitch.MaterialSwitch
         android:id="@+id/switchIsFree"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Is Free Model" />
-
-
 
 </LinearLayout>

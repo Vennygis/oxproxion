@@ -96,7 +96,7 @@
                 app:strokeColor="@color/chestnut"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <!-- Existing type filter bar -->
+        <!-- Updated type filter bar with Transcription -->
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/filterBar"
             android:layout_width="0dp"
@@ -133,6 +133,16 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Image Gen"
+                style="?attr/materialButtonOutlinedStyle"
+                app:backgroundTint="@color/toggle_background_selector"
+                app:strokeColor="@color/chestnut"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterTranscriptionButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Transc."
                 style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
                 app:strokeColor="@color/chestnut"/>
@@ -180,8 +190,6 @@
                 app:strokeColor="@color/chestnut"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
-
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewOpenRouterModels"

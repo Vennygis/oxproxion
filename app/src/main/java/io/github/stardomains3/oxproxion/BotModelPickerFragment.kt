@@ -35,7 +35,7 @@ class BotModelPickerFragment : Fragment() {
     private var currentSourceFilter: SourceFilter = SourceFilter.ALL
     private var currentSortOrder: SortOrder = SortOrder.ALPHABETICAL
 
-    enum class FilterType { ALL, VISION, IMAGE_GEN }
+    enum class FilterType { ALL, VISION, IMAGE_GEN, TRANSCRIPTION }
     enum class CostFilter { ALL, FREE, PAID }
     enum class SourceFilter { ALL, LAN, CLOUD }
     enum class SortOrder { ALPHABETICAL, BY_DATE }
@@ -72,6 +72,7 @@ class BotModelPickerFragment : Fragment() {
         currentFilterType = when (sharedPreferencesHelper.getBotPickerFilterType()) {
             "VISION" -> FilterType.VISION
             "IMAGE_GEN" -> FilterType.IMAGE_GEN
+            "TRANSCRIPTION" -> FilterType.TRANSCRIPTION
             else -> FilterType.ALL
         }
 
@@ -94,6 +95,7 @@ class BotModelPickerFragment : Fragment() {
             FilterType.ALL -> R.id.filterAllButton
             FilterType.VISION -> R.id.filterVisionButton
             FilterType.IMAGE_GEN -> R.id.filterImageGenButton
+            FilterType.TRANSCRIPTION -> R.id.filterTranscriptionButton
         })
 
         costFilterBar.check(when (currentCostFilter) {
@@ -159,6 +161,7 @@ class BotModelPickerFragment : Fragment() {
                     R.id.filterAllButton -> FilterType.ALL
                     R.id.filterVisionButton -> FilterType.VISION
                     R.id.filterImageGenButton -> FilterType.IMAGE_GEN
+                    R.id.filterTranscriptionButton -> FilterType.TRANSCRIPTION
                     else -> FilterType.ALL
                 }
                 sharedPreferencesHelper.saveBotPickerFilterType(currentFilterType.name)
@@ -229,12 +232,13 @@ class BotModelPickerFragment : Fragment() {
             FilterType.ALL -> tempFiltered
             FilterType.VISION -> tempFiltered.filter { it.isVisionCapable }.toMutableList()
             FilterType.IMAGE_GEN -> tempFiltered.filter { it.isImageGenerationCapable }.toMutableList()
+            FilterType.TRANSCRIPTION -> tempFiltered.filter { it.isTranscription }.toMutableList()
         }
 
         tempFiltered = when (currentCostFilter) {
             CostFilter.ALL -> tempFiltered
-            CostFilter.FREE -> tempFiltered.filter { it.isFree }.toMutableList() // Simplified
-            CostFilter.PAID -> tempFiltered.filter { !it.isFree }.toMutableList() // Simplified
+            CostFilter.FREE -> tempFiltered.filter { it.isFree }.toMutableList()
+            CostFilter.PAID -> tempFiltered.filter { !it.isFree }.toMutableList()
         }
 
         tempFiltered = when (currentSourceFilter) {
@@ -272,6 +276,7 @@ class BotModelPickerFragment : Fragment() {
                 putBoolean("isVisionCapable", modelToEdit.isVisionCapable)
                 putBoolean("isReasoningCapable", modelToEdit.isReasoningCapable)
                 putBoolean("isImageGenerationCapable", modelToEdit.isImageGenerationCapable)
+                putBoolean("isTranscription", modelToEdit.isTranscription)
                 putLong("created", modelToEdit.created)
                 putBoolean("isLANModel", modelToEdit.isLANModel)
                 putBoolean("isFree", modelToEdit.isFree)
@@ -299,49 +304,25 @@ class BotModelPickerFragment : Fragment() {
             filterAndSortModels(searchView.query.toString())
         }
     }
+
     private fun updateModel(oldModel: LlmModel, newModel: LlmModel) {
         val index = models.indexOfFirst { it.apiIdentifier == oldModel.apiIdentifier }
         if (index != -1) {
-            // 1. Update the local list
             models[index] = newModel
-
-            // 2. Save the new list to SharedPreferences
             saveCustomModels()
 
-            // 3. Get the ID that the Chat is currently using
             val currentActiveId = sharedPreferencesHelper.getPreferenceModelnew()
 
-            // CASE: We changed the ID of the model that is currently active
             if (oldModel.apiIdentifier == currentActiveId) {
-                // The user changed "old-id" to "new-id".
-                // We must tell the ChatViewModel to start using "new-id"
-                // and we must update the Preference so it remembers "new-id" next time.
-
                 sharedPreferencesHelper.savePreferenceModelnewchat(newModel.apiIdentifier)
                 chatViewModel.setModel(newModel.apiIdentifier)
-            }
-            // CASE: We changed the Name/Capabilities of the active model (ID is the same)
-            else if (newModel.apiIdentifier == currentActiveId) {
-                // Just force a refresh to update the Name/UI
+            } else if (newModel.apiIdentifier == currentActiveId) {
                 chatViewModel.setModel(newModel.apiIdentifier)
             }
 
             filterAndSortModels(searchView.query.toString())
         }
     }
-
-    /*private fun updateModel(oldModel: LlmModel, newModel: LlmModel) {
-        val index = models.indexOfFirst { it.apiIdentifier == oldModel.apiIdentifier }
-        if (index != -1) {
-            if (oldModel.apiIdentifier == sharedPreferencesHelper.getPreferenceModelnew()) {
-                sharedPreferencesHelper.savePreferenceModelnewchat(newModel.apiIdentifier)
-                chatViewModel.setModel(newModel.apiIdentifier)
-            }
-            models[index] = newModel
-            saveCustomModels()
-            filterAndSortModels(searchView.query.toString())
-        }
-    }*/
 
     private fun deleteModel(model: LlmModel) {
         if (model.apiIdentifier == sharedPreferencesHelper.getPreferenceModelnew()) {
@@ -370,6 +351,7 @@ class BotModelPickerFragment : Fragment() {
             isFree = true
         )
     )
+
     private fun updateSortButtons(sortOrder: SortOrder) {
         sortBar.check(if (sortOrder == SortOrder.ALPHABETICAL) R.id.sortAlphabeticalButton else R.id.sortDateButton)
     }

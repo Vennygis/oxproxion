@@ -373,6 +373,16 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
             
             ---
             
+            ## Audio Transcription Models
+            
+             *   Support for audio transcription models for OpenRouter and oMLX(Other LAN model servers don't support it as far as I know.)
+             *   Click the mic icon on the main chat screen to load your audio file and then click send button.
+             *   Only returns the transcript. These models do not chat.
+             *   For a transcription model on oMLX, toggle the Transcription toggle in the edit model screen for it to be allowed to attach an audio file.
+             *   Different models may support a different set of audio file formats.
+            
+            ---
+            
             ## Advanced Reasoning Settings
             
              *   You can enable it and make additional reasoing settings here. Long-press on reasoning button to make its screen appear.

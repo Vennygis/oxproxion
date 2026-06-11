@@ -21,14 +21,13 @@ class OpenRouterModelsAdapter(
     }
 
     class ModelViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val modelId: TextView = view.findViewById(R.id.textModelName) // Reusing the same ID
-        val modelName: TextView = view.findViewById(R.id.textModelDisplayName) // We'll need a new ID for this
+        val modelId: TextView = view.findViewById(R.id.textModelName)
+        val modelName: TextView = view.findViewById(R.id.textModelDisplayName)
         val modelIcon: ImageView = view.findViewById(R.id.iconModelType)
         val openIcon: ImageView = view.findViewById(R.id.iconORweb)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ModelViewHolder {
-        // We need a new layout item for this, let's call it list_item_open_router_model
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.list_item_open_router_model, parent, false)
         return ModelViewHolder(view)
@@ -40,9 +39,10 @@ class OpenRouterModelsAdapter(
         holder.modelName.text = model.displayName
 
         val iconRes = when {
-            model.isImageGenerationCapable -> R.drawable.ic_palette  // NEW: Image generation models
-            model.isVisionCapable -> R.drawable.ic_vision           // Vision models (image input)
-            else -> R.drawable.ic_person                            // Text-only models
+            model.isTranscription -> R.drawable.ic_mic
+            model.isImageGenerationCapable -> R.drawable.ic_palette
+            model.isVisionCapable -> R.drawable.ic_vision
+            else -> R.drawable.ic_person
         }
         holder.modelIcon.setImageResource(iconRes)
 
@@ -66,7 +66,7 @@ class OpenRouterModelsAdapter(
             } catch (e: Exception) {
                 Toast.makeText(holder.itemView.context, "Could not open browser.", Toast.LENGTH_SHORT).show()
             }
-            true // Consume the long click
+            true
         }
     }
 

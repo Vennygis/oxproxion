@@ -30,7 +30,8 @@ class EditModelDialogFragment : DialogFragment() {
         val switchReason  = view.findViewById<MaterialSwitch>(R.id.switchReasoningCapable)
         val switchLan     = view.findViewById<MaterialSwitch>(R.id.switchLanModel)
         val switchImage   = view.findViewById<MaterialSwitch>(R.id.switchImageGen)
-        val switchIsFree  = view.findViewById<MaterialSwitch>(R.id.switchIsFree) // NEW
+        val switchTranscription = view.findViewById<MaterialSwitch>(R.id.switchTranscription) // NEW
+        val switchIsFree  = view.findViewById<MaterialSwitch>(R.id.switchIsFree)
 
         /* ----------  tint styling  ---------- */
         val thumbTint = ColorStateList(
@@ -42,8 +43,8 @@ class EditModelDialogFragment : DialogFragment() {
                 intArrayOf(-android.R.attr.state_checked)),
             intArrayOf("#a0610a".toColorInt(), "#000000".toColorInt()))
 
-        // Added switchIsFree to the styling list
-        listOf(switchVision, switchReason, switchLan, switchImage, switchIsFree).forEach {
+        // Added switchTranscription and switchIsFree to the styling list
+        listOf(switchVision, switchReason, switchLan, switchImage, switchTranscription, switchIsFree).forEach {
             it.thumbTintList  = thumbTint
             it.trackTintList  = trackTint
             it.thumbTintMode  = PorterDuff.Mode.SRC_ATOP
@@ -57,6 +58,7 @@ class EditModelDialogFragment : DialogFragment() {
             val created = args.getLong("created", 0L)
             val isFree = args.getBoolean("isFree", false)
             val isImageGen = args.getBoolean("isImageGenerationCapable", false)
+            val isTranscription = args.getBoolean("isTranscription", false) // NEW
             if (!dn.isNullOrBlank() && !id.isNullOrBlank()) {
                 LlmModel(
                     displayName  = dn,
@@ -64,6 +66,7 @@ class EditModelDialogFragment : DialogFragment() {
                     isVisionCapable = args.getBoolean("isVisionCapable", false),
                     isReasoningCapable = args.getBoolean("isReasoningCapable", false),
                     isImageGenerationCapable = isImageGen,
+                    isTranscription = isTranscription, // NEW
                     created = created,
                     isLANModel = args.getBoolean("isLANModel", false),
                     isFree = isFree
@@ -78,7 +81,8 @@ class EditModelDialogFragment : DialogFragment() {
             switchReason.isChecked = m.isReasoningCapable
             switchLan.isChecked    = m.isLANModel
             switchImage.isChecked  = m.isImageGenerationCapable
-            switchIsFree.isChecked = m.isFree // RESTORE STATE
+            switchTranscription.isChecked = m.isTranscription // NEW
+            switchIsFree.isChecked = m.isFree
             builder.setTitle("Edit Model")
         } ?: builder.setTitle("Add Model")
 
@@ -94,7 +98,8 @@ class EditModelDialogFragment : DialogFragment() {
                 val reasoning = switchReason.isChecked
                 val isLan     = switchLan.isChecked
                 val isImage   = switchImage.isChecked
-                val isFree    = switchIsFree.isChecked // CAPTURE TOGGLE STATE
+                val isTranscription = switchTranscription.isChecked // NEW
+                val isFree    = switchIsFree.isChecked
 
                 val createdTimestamp = existingModel?.created ?: (System.currentTimeMillis() / 1000)
 
@@ -104,9 +109,10 @@ class EditModelDialogFragment : DialogFragment() {
                     isVisionCapable     = vision,
                     isImageGenerationCapable = isImage,
                     isReasoningCapable  = reasoning,
+                    isTranscription = isTranscription, // NEW
                     created = createdTimestamp,
                     isLANModel         = isLan,
-                    isFree = isFree // PASS TO MODEL
+                    isFree = isFree
                 )
 
                 existingModel?.let { old -> onModelUpdated?.invoke(old, newModel) }

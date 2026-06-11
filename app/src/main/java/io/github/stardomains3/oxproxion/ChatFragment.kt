@@ -154,6 +154,9 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
 
     private var selectedImageBytes: ByteArray? = null
     private var selectedImageMime: String? = null
+    private lateinit var audioPicker: ActivityResultLauncher<Array<String>>
+    private var selectedAudioBytes: ByteArray? = null
+    private var selectedAudioFormat: String? = null
     private var doVolScroll: Boolean = false
     private lateinit var plusButton: MaterialButton
     private lateinit var btnDecreaseFont: MaterialButton
@@ -355,6 +358,9 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
 
                 Toast.makeText(requireContext(), "Folder access granted! You can now use file tools.", Toast.LENGTH_SHORT).show()
             }
+        }
+        audioPicker = registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri: Uri? ->
+            uri?.let { processAudioUri(it) }
         }
         imagePicker = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -714,15 +720,21 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
                     }
                 }
 
-                // Handle vision model capabilities
-                if (viewModel.isVisionModel(model)) {
+
+                // Handle attachment button (plusButton) based on model capabilities
+                if (viewModel.isTranscriptionModel(model)) {
                     plusButton.icon.alpha = 255
                     plusButton.isEnabled = true
+                    plusButton.setIconResource(R.drawable.ic_mic)
+                } else if (viewModel.isVisionModel(model)) {
+                    plusButton.icon.alpha = 255
+                    plusButton.isEnabled = true
+                    plusButton.setIconResource(R.drawable.ic_imgup)  // original plus icon
                 } else {
                     plusButton.icon.alpha = 102
                     plusButton.isEnabled = false
+                    plusButton.setIconResource(R.drawable.ic_imgup)
                 }
-
                 genButton.visibility = if (viewModel.isImageGenerationModel(model)) View.VISIBLE else View.GONE
 
                 // Auto-disable web search if switching to LAN model
@@ -736,6 +748,13 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
                     selectedImageMime = null
                     attachmentPreviewContainer.visibility = View.GONE
                     Toast.makeText(requireContext(), "Image removed: selected model doesn't support images.", Toast.LENGTH_SHORT).show()
+                }
+                // Clear staged audio if model doesn't support transcription
+                if (selectedAudioBytes != null && !viewModel.isTranscriptionModel(model)) {
+                    selectedAudioBytes = null
+                    selectedAudioFormat = null
+                    attachmentPreviewContainer.visibility = View.GONE
+                    Toast.makeText(requireContext(), "Audio removed: selected model doesn't support transcription.", Toast.LENGTH_SHORT).show()
                 }
             }
 
@@ -1660,6 +1679,8 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
         removeAttachmentButton.setOnClickListener {
             selectedImageBytes = null
             selectedImageMime = null
+            selectedAudioBytes = null
+            selectedAudioFormat = null
             attachmentPreviewContainer.visibility = View.GONE
             viewModel.setPendingUserImageUri(null)
             previewImageView.setImageBitmap(null)
@@ -1741,6 +1762,26 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
                             .show()
                         return@setOnClickListener
                     }
+                }
+                if (viewModel.isTranscriptionModel(viewModel.activeChatModel.value) && selectedAudioBytes != null) {
+                    hideKeyboard()
+                    hasScrolled = false
+
+                    val audioBytes = selectedAudioBytes!!
+                    val audioFormat = selectedAudioFormat ?: "wav"
+
+                    if (viewModel.activeModelIsLan()) {
+                        viewModel.sendTranscriptionLan(audioBytes, audioFormat, "audio.$audioFormat")
+                    } else {
+                        viewModel.sendTranscriptionOpenRouter(audioBytes, audioFormat)
+                    }
+
+                    // Clear audio attachment
+                    selectedAudioBytes = null
+                    selectedAudioFormat = null
+                    attachmentPreviewContainer.visibility = View.GONE
+
+                    return@setOnClickListener
                 }
                 hideKeyboard()
                 hasScrolled = false
@@ -1921,6 +1962,8 @@ $cleanContent
             viewModel.startNewChat()
             currentTempImageFile?.delete()
             currentTempImageFile = null
+            selectedAudioBytes = null
+            selectedAudioFormat = null
             previewImageView.setImageBitmap(null)
             // Add to reset logic
             pendingFiles.clear()
@@ -1954,6 +1997,8 @@ $cleanContent
                     viewModel.startNewChat()
                     currentTempImageFile?.delete()
                     currentTempImageFile = null
+                    selectedAudioBytes = null
+                    selectedAudioFormat = null
                     previewImageView.setImageBitmap(null)
                     pendingFiles.clear()
                     updateAttachmentButton()
@@ -2698,7 +2743,55 @@ $cleanContent
             speechButton.visibility = View.GONE
         }
     }
+    private fun processAudioUri(uri: Uri) {
+        lifecycleScope.launch {
+            try {
+                val mimeType = requireContext().contentResolver.getType(uri)
+                val extension = uri.lastPathSegment?.substringAfterLast('.')?.lowercase() ?: "wav"
 
+                // Validate audio format
+                val supportedFormats = setOf("wav", "mp3", "flac", "m4a", "ogg", "webm", "aac", "opus")
+                val formatFromMime = when {
+                    mimeType == "audio/wav" || mimeType == "audio/x-wav" -> "wav"
+                    mimeType == "audio/mpeg" || mimeType == "audio/mp3" -> "mp3"
+                    mimeType == "audio/flac" -> "flac"
+                    mimeType == "audio/mp4" || mimeType == "audio/x-m4a" -> "m4a"
+                    mimeType == "audio/ogg" -> "ogg"
+                    mimeType == "audio/webm" -> "webm"
+                    mimeType == "audio/aac" -> "aac"
+                    mimeType == "audio/opus" || mimeType == "application/ogg" -> "opus"
+                    else -> extension
+                }
+
+
+                if (formatFromMime !in supportedFormats && extension !in supportedFormats) {
+                    Toast.makeText(requireContext(), "Unsupported audio format", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                val audioFormat = if (formatFromMime in supportedFormats) formatFromMime else extension
+
+                val bytes = withContext(Dispatchers.IO) {
+                    requireContext().contentResolver.openInputStream(uri)?.use { it.readBytes() }
+                }
+
+                if (bytes == null || bytes.size > 25_000_000) {
+                    Toast.makeText(requireContext(), "Audio too large (max 25MB)", Toast.LENGTH_SHORT).show()
+                    return@launch
+                }
+
+                selectedAudioBytes = bytes
+                selectedAudioFormat = audioFormat
+
+                // Show audio attachment indicator
+                previewImageView.setImageResource(android.R.drawable.ic_media_play) // or use a custom ic_audio
+                attachmentPreviewContainer.visibility = View.VISIBLE
+                Toast.makeText(requireContext(), "Audio attached", Toast.LENGTH_SHORT).show()
+            } catch (e: Exception) {
+                Toast.makeText(requireContext(), "Failed to read audio: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     // 🚀 synthesizeToWavFile (MINIMAL CHANGE - still queues with utteranceId)
     private fun synthesizeToWavFile(text: String, position: Int) {
         val safeText = text.take(3900)
@@ -3038,6 +3131,10 @@ $cleanContent
         plusButton.setOnClickListener {
             hideKeyboard()
             val model = viewModel.activeChatModel.value
+            if (model != null && viewModel.isTranscriptionModel(model)) {
+                audioPicker.launch(arrayOf("audio/*"))
+                return@setOnClickListener
+            }
             if (model == null || !viewModel.isVisionModel(model)) {
                 Toast.makeText(requireContext(), "Image/PDF selection not supported for the current model.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -3085,6 +3182,10 @@ $cleanContent
         // In setupPlusButtonListener(), after the existing setOnClickListener block
         plusButton.setOnLongClickListener {
             val model = viewModel.activeChatModel.value
+            if (viewModel.isTranscriptionModel(model)) {
+                audioPicker.launch(arrayOf("audio/*"))
+                return@setOnLongClickListener true
+            }
             if (model == null || !viewModel.isVisionModel(model)) {
                 Toast.makeText(requireContext(), "Image selection not supported for the current model.", Toast.LENGTH_SHORT).show()
                 return@setOnLongClickListener false

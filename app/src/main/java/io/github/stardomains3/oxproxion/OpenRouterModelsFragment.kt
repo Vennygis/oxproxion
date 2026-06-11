@@ -34,7 +34,7 @@ class OpenRouterModelsFragment : Fragment() {
     private var currentCostFilter: CostFilter = CostFilter.ALL
 
     enum class FilterType {
-        ALL, VISION, IMAGE_GEN
+        ALL, VISION, IMAGE_GEN, TRANSCRIPTION
     }
 
     enum class CostFilter {
@@ -108,6 +108,7 @@ class OpenRouterModelsFragment : Fragment() {
         currentFilterType = when (sharedPreferencesHelper.getOpenRouterFilterType()) {
             "VISION" -> FilterType.VISION
             "IMAGE_GEN" -> FilterType.IMAGE_GEN
+            "TRANSCRIPTION" -> FilterType.TRANSCRIPTION
             else -> FilterType.ALL
         }
         currentCostFilter = when (sharedPreferencesHelper.getOpenRouterCostFilter()) {
@@ -121,6 +122,7 @@ class OpenRouterModelsFragment : Fragment() {
             FilterType.ALL -> R.id.filterAllButton
             FilterType.VISION -> R.id.filterVisionButton
             FilterType.IMAGE_GEN -> R.id.filterImageGenButton
+            FilterType.TRANSCRIPTION -> R.id.filterTranscriptionButton
         })
 
         costFilterBar.check(when (currentCostFilter) {
@@ -145,6 +147,7 @@ class OpenRouterModelsFragment : Fragment() {
                     R.id.filterAllButton -> FilterType.ALL
                     R.id.filterVisionButton -> FilterType.VISION
                     R.id.filterImageGenButton -> FilterType.IMAGE_GEN
+                    R.id.filterTranscriptionButton -> FilterType.TRANSCRIPTION
                     else -> FilterType.ALL
                 }
                 sharedPreferencesHelper.saveOpenRouterFilterType(currentFilterType.name)
@@ -195,6 +198,7 @@ class OpenRouterModelsFragment : Fragment() {
             FilterType.ALL -> tempFiltered
             FilterType.VISION -> tempFiltered.filter { it.isVisionCapable }
             FilterType.IMAGE_GEN -> tempFiltered.filter { it.isImageGenerationCapable }
+            FilterType.TRANSCRIPTION -> tempFiltered.filter { it.isTranscription }
         }
 
         tempFiltered = when (currentCostFilter) {

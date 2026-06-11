@@ -9,6 +9,7 @@ data class LlmModel(
     val isVisionCapable: Boolean,  // To determine which icon to show
     val isImageGenerationCapable: Boolean = false,
     val isReasoningCapable: Boolean = false,
+    val isTranscription: Boolean = false,  // NEW - for audio transcription models
     val created: Long = 0L,
     val isFree: Boolean = apiIdentifier.endsWith(":free")||apiIdentifier.endsWith("/free"),
     val isLANModel: Boolean = false,

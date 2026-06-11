@@ -1,0 +1,2 @@
+- Updated dependencies
+- Added audio transcription support for those models on OpenRouter and oMLX.

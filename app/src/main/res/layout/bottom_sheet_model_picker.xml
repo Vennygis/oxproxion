@@ -94,6 +94,16 @@
                 style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
                 app:strokeColor="@color/chestnut"/>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/filterTranscriptionButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Transc."
+                style="?attr/materialButtonOutlinedStyle"
+                app:backgroundTint="@color/toggle_background_selector"
+                app:strokeColor="@color/chestnut"/>
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
         <!-- Cost Filter Bar (3 buttons: All, Free, Paid) -->
