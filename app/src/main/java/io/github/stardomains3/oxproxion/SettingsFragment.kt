@@ -13,6 +13,7 @@ import com.google.android.material.appbar.MaterialToolbar
 import com.google.android.material.materialswitch.MaterialSwitch
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators.BIOMETRIC_STRONG
+import androidx.core.widget.doAfterTextChanged
 
 class SettingsFragment : Fragment(R.layout.fragment_settings) {
 
@@ -51,6 +52,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val maxTokensButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.maxTokensButton)
         val lanButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.lanButton)
         val openRouterTransformsSwitch = view.findViewById<MaterialSwitch>(R.id.openRouterTransformsSwitch)
+        val voiceModelEdit = view.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.voiceInputModelEdit)
+        val voiceProviderToggle = view.findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.voiceInputProviderToggle)
         biometricsSwitch.isChecked = prefs.getBiometricEnabled()
         volumeScrollSwitch.isChecked = viewModel.isVolumeScrollEnabled.value ?: false
         notificationsSwitch.isChecked = prefs.getNotiPreference()
@@ -148,6 +151,12 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         showCitationsSwitch.setOnCheckedChangeListener { _, isChecked ->
             prefs.saveShowCitations(isChecked)
         }
+        voiceModelEdit.setText(prefs.getVoiceInputModel())
+        when (prefs.getVoiceInputProvider()) {
+            "cloud" -> voiceProviderToggle.check(R.id.providerCloudButton)
+            "off" -> voiceProviderToggle.check(R.id.providerOffButton)
+            else -> voiceProviderToggle.check(R.id.providerLanButton)
+        }
         timeoutButton.setOnClickListener {
             TimeoutDialogFragment().show(childFragmentManager, TimeoutDialogFragment.TAG)
         }
@@ -197,7 +206,22 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 prefs.saveBiometricEnabled(false)
             }
         }
+// Save on text change
+        voiceModelEdit.doAfterTextChanged { text ->
+            prefs.setVoiceInputModel(text?.toString() ?: "")
+        }
 
+// Save provider on toggle change
+        voiceProviderToggle.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                val provider = when (checkedId) {
+                    R.id.providerCloudButton -> "cloud"
+                    R.id.providerOffButton -> "off"
+                    else -> "lan"
+                }
+                prefs.setVoiceInputProvider(provider)
+            }
+        }
 
         // 🔥 STYLE ALL SWITCHES (your exact code → reusable)
         listOf(

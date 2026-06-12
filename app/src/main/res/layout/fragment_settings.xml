@@ -579,6 +579,70 @@
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
 
+            <!-- Voice Input Settings -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Voice Input (STT)"
+                android:textColor="#F8F8F8"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="STT Model ID (e.g., Qwen3-ASR-1.7B-8bit)"
+                app:boxStrokeColor="@color/text_input_box_stroke_selector"
+                app:hintTextColor="@android:color/white"
+                android:textColorHint="@android:color/white">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/voiceInputModelEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@android:color/white"
+                    android:inputType="text" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/voiceInputProviderToggle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:singleSelection="true">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/providerLanButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="LAN"
+                    style="?attr/materialButtonOutlinedStyle"
+                    app:backgroundTint="@color/toggle_background_selector"
+                    app:strokeColor="@color/chestnut"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/providerCloudButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Cloud"
+                    style="?attr/materialButtonOutlinedStyle"
+                    app:backgroundTint="@color/toggle_background_selector"
+                    app:strokeColor="@color/chestnut"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/providerOffButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Off"
+                    style="?attr/materialButtonOutlinedStyle"
+                    app:backgroundTint="@color/toggle_background_selector"
+                    app:strokeColor="@color/chestnut"/>
+            </com.google.android.material.button.MaterialButtonToggleGroup>
 
 
         </LinearLayout>

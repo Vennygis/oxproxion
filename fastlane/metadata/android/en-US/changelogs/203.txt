@@ -1,0 +1,3 @@
+- Added an option in settings for an alternate STT model for long-pressing the mic icon that is in the extended dock. Set your preferred cloud or LAN(oMLX) STT model in Settings.
+- Long press the clear button in the extended dock to copy prompt box text to keyboard.
+- OpenRouter fetch function now fetches all image generation models available too.

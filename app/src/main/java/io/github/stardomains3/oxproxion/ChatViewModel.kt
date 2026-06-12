@@ -812,6 +812,80 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+    suspend fun transcribeAudioForInput(audioBytes: ByteArray, audioFormat: String, fileName: String): String? {
+        val modelId = sharedPreferencesHelper.getVoiceInputModel()
+        if (modelId.isBlank()) {
+            _toastUiEvent.postValue(Event("Voice input model not set"))
+            return null
+        }
+
+        val provider = sharedPreferencesHelper.getVoiceInputProvider()
+        if (provider == "off") {
+            _toastUiEvent.postValue(Event("Voice input is disabled"))
+            return null
+        }
+
+        return withContext(Dispatchers.IO) {
+            try {
+                if (provider == "cloud") {
+                    if (activeChatApiKey.isBlank()) {
+                        _toastUiEvent.postValue(Event("OpenRouter API key not set"))
+                        return@withContext null
+                    }
+                    val base64Audio = Base64.getEncoder().encodeToString(audioBytes)
+                    val requestBody = buildJsonObject {
+                        put("model", JsonPrimitive(modelId))
+                        putJsonObject("input_audio") {
+                            put("data", JsonPrimitive(base64Audio))
+                            put("format", JsonPrimitive(audioFormat))
+                        }
+                    }
+                    val response = httpClient.post("https://openrouter.ai/api/v1/audio/transcriptions") {
+                        header("Authorization", "Bearer $activeChatApiKey")
+                        contentType(ContentType.Application.Json)
+                        setBody(requestBody)
+                    }
+                    if (!response.status.isSuccess()) {
+                        val errorBody = try { response.bodyAsText() } catch (_: Exception) { "No details" }
+                        _toastUiEvent.postValue(Event("Cloud transcription failed: ${response.status}"))
+                        return@withContext null
+                    }
+                    val result = response.body<JsonObject>()
+                    result["text"]?.jsonPrimitive?.content
+                } else {
+                    val lanEndpoint = sharedPreferencesHelper.getLanEndpoint()
+                    if (lanEndpoint.isNullOrBlank()) {
+                        _toastUiEvent.postValue(Event("LAN endpoint not configured"))
+                        return@withContext null
+                    }
+                    val lanKey = sharedPreferencesHelper.getLanApiKey()
+                    val response = lanHttpClient.submitFormWithBinaryData(
+                        url = "$lanEndpoint/v1/audio/transcriptions",
+                        formData = formData {
+                            append("file", audioBytes, Headers.build {
+                                append(HttpHeaders.ContentDisposition, "filename=\"$fileName\"")
+                                append(HttpHeaders.ContentType, "audio/$audioFormat")
+                            })
+                            append("model", modelId)
+                        }
+                    ) {
+                        header("Authorization", "Bearer ${if (lanKey.isNullOrBlank()) "any-non-empty-string" else lanKey}")
+                    }
+                    if (!response.status.isSuccess()) {
+                        val errorBody = try { response.bodyAsText() } catch (_: Exception) { "No details" }
+                        _toastUiEvent.postValue(Event("LAN transcription failed: ${response.status} - $errorBody"))
+                        return@withContext null
+                    }
+                    val result = response.body<JsonObject>()
+                    result["text"]?.jsonPrimitive?.content
+                }
+            } catch (e: Exception) {
+                _toastUiEvent.postValue(Event("Transcription error: ${e.message}"))
+                null
+            }
+        }
+    }
+
     fun sendTranscriptionOpenRouter(audioBytes: ByteArray, audioFormat: String) {
         val modelId = _activeChatModel.value ?: return
 
@@ -5164,7 +5238,6 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun fetchOpenRouterModels() {
-
         viewModelScope.launch {
             try {
                 // Fetch regular models
@@ -5178,16 +5251,14 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                             isVisionCapable = it.architecture.input_modalities.contains("image"),
                             isImageGenerationCapable = it.architecture.output_modalities?.contains("image") ?: false,
                             isReasoningCapable = it.supportedParameters?.contains("reasoning") ?: false,
-                            isTranscription = false,  // Regular models are not transcription
+                            isTranscription = false,
                             created = it.created,
                             isFree = it.id.endsWith(":free")
                         )
                     }
-                } else {
-                    emptyList()
-                }
+                } else emptyList()
 
-                // Fetch transcription models (STT - speech to text)
+                // Fetch transcription models (STT)
                 val transcriptionResponse = httpClient.get("https://openrouter.ai/api/v1/models?output_modalities=transcription")
                 val transcriptionModels = if (transcriptionResponse.status.isSuccess()) {
                     val responseBody = transcriptionResponse.body<OpenRouterResponse>()
@@ -5198,18 +5269,52 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                             isVisionCapable = false,
                             isImageGenerationCapable = false,
                             isReasoningCapable = false,
-                            isTranscription = true,  // Mark as transcription
+                            isTranscription = true,
                             created = it.created,
                             isFree = it.id.endsWith(":free")
                         )
                     }
-                } else {
-                    emptyList()
-                }
+                } else emptyList()
 
-                // Combine both lists, removing duplicates
-                allOpenRouterModels = (regularModels + transcriptionModels).distinctBy { it.apiIdentifier }
+                // Fetch image generation models
+                val imageGenResponse = httpClient.get("https://openrouter.ai/api/v1/models?output_modalities=image")
+                val imageGenModels = if (imageGenResponse.status.isSuccess()) {
+                    val responseBody = imageGenResponse.body<OpenRouterResponse>()
+                    responseBody.data.map {
+                        LlmModel(
+                            displayName = it.name,
+                            apiIdentifier = it.id,
+                            isVisionCapable = false,
+                            isImageGenerationCapable = true,  // image gen capable
+                            isReasoningCapable = false,
+                            isTranscription = false,
+                            created = it.created,
+                            isFree = it.id.endsWith(":free")
+                        )
+                    }
+                } else emptyList()
 
+                // Combine and merge by ID, ensuring capabilities are preserved/combined
+                val allModels = regularModels + transcriptionModels + imageGenModels
+                val merged = allModels
+                    .groupBy { it.apiIdentifier }
+                    .map { (id, models) ->
+                        // Take the model with the most information (prefer regular, but merge flags)
+                        val base = models.first() // could be any
+                        LlmModel(
+                            displayName = base.displayName,
+                            apiIdentifier = base.apiIdentifier,
+                            isVisionCapable = models.any { it.isVisionCapable },
+                            isImageGenerationCapable = models.any { it.isImageGenerationCapable },
+                            isReasoningCapable = models.any { it.isReasoningCapable },
+                            isTranscription = models.any { it.isTranscription },
+                            created = base.created,
+                            isFree = base.isFree,
+                            isLANModel = false
+                        )
+                    }
+
+                allOpenRouterModels = merged
                 saveOpenRouterModels(allOpenRouterModels)
                 applySort()
             } catch (e: Exception) {
@@ -5217,6 +5322,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             }
         }
     }
+
 
 
     fun modelExists(apiIdentifier: String): Boolean {

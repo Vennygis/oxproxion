@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.GradientDrawable
 import android.graphics.pdf.PdfRenderer
 import android.media.AudioManager
+import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -42,6 +43,7 @@ import android.text.method.LinkMovementMethod
 import android.text.style.BackgroundColorSpan
 import android.text.util.Linkify
 import android.util.Base64
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.KeyEvent
@@ -239,6 +241,9 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
     private var isScrollProgressEnabled = false
     private var lastContentLength = 0
     private var hasScrolled = false
+    private var mediaRecorder: MediaRecorder? = null
+    private var voiceRecordFile: File? = null
+    private var isRecording = false
     private lateinit var textFilePicker: ActivityResultLauncher<String>
     private val pendingFiles = mutableListOf<AttachedFile>()
     private val MAX_FILE_SIZE = 3 * 1024 * 1024 // 3MB total
@@ -725,7 +730,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
                 if (viewModel.isTranscriptionModel(model)) {
                     plusButton.icon.alpha = 255
                     plusButton.isEnabled = true
-                    plusButton.setIconResource(R.drawable.ic_mic)
+                    plusButton.setIconResource(R.drawable.ic_uprec)
                 } else if (viewModel.isVisionModel(model)) {
                     plusButton.icon.alpha = 255
                     plusButton.isEnabled = true
@@ -1666,6 +1671,9 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
             textToSpeech.stop()
             textToSpeech.shutdown()
         }
+        mediaRecorder?.release()
+        mediaRecorder = null
+        voiceRecordFile?.delete()
         //if (!isFontUpdate) {  // Only stop the service if not a font update (i.e., actual app closure)
         //    stopForegroundService()
       //  }
@@ -2677,16 +2685,40 @@ $cleanContent
             true
         }
         speechButton.setOnClickListener {
-            hideKeyboard()
-            if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-                permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)  // NEW: Use launcher instead of ActivityCompat
+            if (isRecording) {
+                // If already recording, a single tap stops it
+                stopVoiceRecording()
             } else {
-                startSpeechRecognition()
+                // If not recording, check permissions and start
+                if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                    permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                } else {
+                    startSpeechRecognition()
+                }
             }
+        }
+        speechButton.setOnLongClickListener {
+            if (isRecording) {
+                stopVoiceRecording()
+            } else {
+                startVoiceRecording()
+            }
+            true
         }
 
         clearButton.setOnClickListener {
             chatEditText.text.clear()
+        }
+        clearButton.setOnLongClickListener {
+            val textToCopy = chatEditText.text.toString()
+            if (textToCopy.isNotEmpty()) {
+                val clipboard = chatEditText.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                val clip = ClipData.newPlainText("Chat Message", textToCopy)
+                clipboard.setPrimaryClip(clip)
+                true // Return true to indicate we have consumed the long press event
+            } else {
+                false // Return false if text is empty so the system handles it normally
+            }
         }
     }
     fun Fragment.hideKeyboard() {
@@ -4078,6 +4110,98 @@ $cleanContent
                 } else {
                     row.visibility = View.GONE
                 }
+            }
+        }
+    }
+    @SuppressLint("MissingPermission")
+    private fun startVoiceRecording() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+            return
+        }
+
+        try {
+            voiceRecordFile = File(requireContext().cacheDir, "voice_input_${System.currentTimeMillis()}.opus")
+
+            mediaRecorder = MediaRecorder(requireContext()).apply {
+                setAudioSource(MediaRecorder.AudioSource.MIC)
+                setOutputFormat(MediaRecorder.OutputFormat.OGG)
+                setOutputFile(voiceRecordFile!!.absolutePath)
+                setAudioEncoder(MediaRecorder.AudioEncoder.OPUS)
+                setAudioSamplingRate(16000)
+                setAudioEncodingBitRate(32000)
+                //setAudioBitRate(32000)
+                prepare()
+                start()
+            }
+
+            isRecording = true
+            speechButton.setIconResource(R.drawable.ic_stop_circle) // Red mic or recording indicator
+            speechButton.isSelected = true
+            Toast.makeText(requireContext(), "Recording...", Toast.LENGTH_SHORT).show()
+        } catch (e: Exception) {
+            //Log.e("ChatFragment", "Failed to start recording", e)
+            Toast.makeText(requireContext(), "Recording failed: ${e.message}", Toast.LENGTH_SHORT).show()
+            voiceRecordFile?.delete()
+            voiceRecordFile = null
+        }
+    }
+
+    private fun stopVoiceRecording() {
+        try {
+            mediaRecorder?.apply {
+                stop()
+                release()
+            }
+            mediaRecorder = null
+            isRecording = false
+            speechButton.setIconResource(R.drawable.ic_mic) // Original mic icon
+            speechButton.isSelected = false
+
+            voiceRecordFile?.let { file ->
+                if (file.exists() && file.length() > 0) {
+                    processVoiceRecording(file)
+                } else {
+                    Toast.makeText(requireContext(), "Recording was empty", Toast.LENGTH_SHORT).show()
+                    file.delete()
+                }
+            }
+        } catch (e: Exception) {
+           // Log.e("ChatFragment", "Failed to stop recording", e)
+            isRecording = false
+            speechButton.setIconResource(R.drawable.ic_mic)
+            speechButton.isSelected = false
+        }
+    }
+
+    private fun processVoiceRecording(file: File) {
+        lifecycleScope.launch {
+            try {
+                val audioBytes = withContext(Dispatchers.IO) {
+                    file.readBytes()
+                }
+
+                Toast.makeText(requireContext(), "Transcribing...", Toast.LENGTH_SHORT).show()
+
+                val transcribedText = viewModel.transcribeAudioForInput(
+                    audioBytes = audioBytes,
+                    audioFormat = "opus",
+                    fileName = file.name
+                )
+
+                if (!transcribedText.isNullOrBlank()) {
+                    chatEditText.setText(transcribedText)
+                    chatEditText.setSelection(transcribedText.length)
+                    // Toast.makeText(requireContext(), "Transcription complete", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(requireContext(), "Transcription failed", Toast.LENGTH_SHORT).show()
+                }
+            } catch (e: Exception) {
+              //  Log.e("ChatFragment", "Voice processing error", e)
+                Toast.makeText(requireContext(), "Error: ${e.message}", Toast.LENGTH_SHORT).show()
+            } finally {
+                file.delete()
+                voiceRecordFile = null
             }
         }
     }

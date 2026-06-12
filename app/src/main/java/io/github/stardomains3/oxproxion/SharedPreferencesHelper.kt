@@ -32,6 +32,9 @@ class SharedPreferencesHelper(context: Context) {
         this.timeoutListener = listener
     }
     companion object {
+
+        private const val KEY_VOICE_INPUT_MODEL = "voice_input_model"
+        private const val KEY_VOICE_INPUT_PROVIDER = "voice_input_provider" // "lan", "cloud", "off"
         const val LAN_PROVIDER_MLX_LM = "mlx_lm"  // NEW
         const val LAN_PROVIDER_HERMES_AGENT = "hermes_agent"  // NEW - Hermes Agent provider
         private const val KEY_AUTO_BACK = "auto_back_enabled"
@@ -204,6 +207,11 @@ class SharedPreferencesHelper(context: Context) {
             effort
         )
     }
+    fun getVoiceInputModel(): String = mainPrefs.getString(KEY_VOICE_INPUT_MODEL, "") ?: ""
+    fun setVoiceInputModel(model: String) = mainPrefs.edit { putString(KEY_VOICE_INPUT_MODEL, model) }
+
+    fun getVoiceInputProvider(): String = mainPrefs.getString(KEY_VOICE_INPUT_PROVIDER, "lan") ?: "lan"
+    fun setVoiceInputProvider(provider: String) = mainPrefs.edit { putString(KEY_VOICE_INPUT_PROVIDER, provider) }
     fun saveChatMemoryCount(count: Int) {
         mainPrefs.edit { putInt(KEY_CHAT_MEMORY_COUNT, count) }
     }

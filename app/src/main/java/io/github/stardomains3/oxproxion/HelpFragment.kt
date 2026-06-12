@@ -380,7 +380,8 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
              *   Only returns the transcript. These models do not chat.
              *   For a transcription model on oMLX, toggle the Transcription toggle in the edit model screen for it to be allowed to attach an audio file.
              *   Different models may support a different set of audio file formats.
-            
+             *   Non-streaming only. No tools are available for use.
+             *   You can use one of these models as an alternate STT by long-pressing the microphone icon in the chat box. Set your STT model in Settings.
             ---
             
             ## Advanced Reasoning Settings
