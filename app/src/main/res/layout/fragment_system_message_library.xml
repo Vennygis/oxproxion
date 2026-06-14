@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="#000000"
+    android:background="?attr/colorSurface"
     tools:context=".SystemMessageLibraryFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="System Message"
-        app:titleTextColor="@android:color/white"
-        android:background="#1C1C1E"
+        app:titleTextColor="?android:attr/textColorPrimary"
+        android:background="?attr/colorSurface"
         app:navigationIcon="@drawable/is_backarrow"
         app:menu="@menu/system_message_library_menu" />
 
@@ -38,7 +38,8 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="16dp"
             android:src="@drawable/ic_addmod"
-            app:backgroundTint="@color/chestnut"
+            app:backgroundTint="?attr/colorPrimary"
+            app:tint="?attr/colorOnPrimary"
             android:contentDescription="@string/add_new_system_message"
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior"/>
 

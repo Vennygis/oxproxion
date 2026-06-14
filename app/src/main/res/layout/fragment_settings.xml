@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000000"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true"
     android:padding="16dp"
     tools:context=".SettingsFragment">
@@ -15,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="Settings"
-        app:titleTextColor="@android:color/white"
-        android:background="#1C1C1E"
+        app:titleTextColor="?android:attr/textColorPrimary"
+        android:background="?attr/colorSurface"
         app:navigationIcon="@drawable/is_backarrow" />
 
     <ScrollView
@@ -30,6 +30,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:orientation="vertical">
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/lanButton"
                 android:layout_width="match_parent"
@@ -42,10 +43,11 @@
                 app:iconTintMode="src_in"
                 app:iconGravity="start"
                 app:iconPadding="12dp"
-                android:textColor="#F8F8F8"
-                app:strokeColor="#6D2E0F"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
-                app:backgroundTint="#1C1C1E" />
+                app:backgroundTint="?attr/colorSurface" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/toolsButton"
                 android:layout_width="match_parent"
@@ -58,10 +60,11 @@
                 app:iconTintMode="src_in"
                 app:iconGravity="start"
                 app:iconPadding="12dp"
-                android:textColor="#F8F8F8"
-                app:strokeColor="#6D2E0F"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
-                app:backgroundTint="#1C1C1E" />
+                app:backgroundTint="?attr/colorSurface" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/promptsButton"
                 android:layout_width="match_parent"
@@ -74,10 +77,11 @@
                 app:iconTintMode="src_in"
                 app:iconGravity="start"
                 app:iconPadding="12dp"
-                android:textColor="#F8F8F8"
-                app:strokeColor="#6D2E0F"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
-                app:backgroundTint="#1C1C1E" />
+                app:backgroundTint="?attr/colorSurface" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/timeoutButton"
                 android:layout_width="match_parent"
@@ -90,10 +94,11 @@
                 app:iconTintMode="src_in"
                 app:iconGravity="start"
                 app:iconPadding="12dp"
-                android:textColor="#F8F8F8"
-                app:strokeColor="#6D2E0F"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
-                app:backgroundTint="#1C1C1E" />
+                app:backgroundTint="?attr/colorSurface" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/maxTokensButton"
                 android:layout_width="match_parent"
@@ -106,10 +111,10 @@
                 app:iconTintMode="src_in"
                 app:iconGravity="start"
                 app:iconPadding="12dp"
-                android:textColor="#F8F8F8"
-                app:strokeColor="#6D2E0F"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
-                app:backgroundTint="#1C1C1E" />
+                app:backgroundTint="?attr/colorSurface" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/apiKeyButton"
@@ -123,10 +128,11 @@
                 app:iconTintMode="src_in"
                 app:iconGravity="start"
                 app:iconPadding="12dp"
-                android:textColor="#F8F8F8"
-                app:strokeColor="#6D2E0F"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
-                app:backgroundTint="#1C1C1E" />
+                app:backgroundTint="?attr/colorSurface" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/braveApiKeyButton"
                 android:layout_width="match_parent"
@@ -139,10 +145,11 @@
                 app:iconTintMode="src_in"
                 app:iconGravity="start"
                 app:iconPadding="12dp"
-                android:textColor="#F8F8F8"
-                app:strokeColor="#6D2E0F"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
-                app:backgroundTint="#1C1C1E" />
+                app:backgroundTint="?attr/colorSurface" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/creditsButton"
                 android:layout_width="match_parent"
@@ -155,12 +162,11 @@
                 app:iconTintMode="src_in"
                 app:iconGravity="start"
                 app:iconPadding="12dp"
-                android:textColor="#F8F8F8"
-                app:strokeColor="#6D2E0F"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
-                app:backgroundTint="#1C1C1E" />
+                app:backgroundTint="?attr/colorSurface" />
 
-            <!-- Help Information Button -->
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/helpButton"
                 android:layout_width="match_parent"
@@ -173,10 +179,11 @@
                 app:iconTintMode="src_in"
                 app:iconGravity="start"
                 app:iconPadding="12dp"
-                android:textColor="#F8F8F8"
-                app:strokeColor="#6D2E0F"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
-                app:backgroundTint="#1C1C1E" />
+                app:backgroundTint="?attr/colorSurface" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -189,7 +196,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Chat Memory:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
@@ -198,11 +205,65 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="8 messages"
-                    android:textColor="#F8F8F8"
-                    app:strokeColor="#6D2E0F"
+                    android:textColor="?android:attr/textColorPrimary"
+                    app:strokeColor="@color/chestnut"
                     app:strokeWidth="1dp"
-                    app:backgroundTint="#1C1C1E" />
+                    app:backgroundTint="?attr/colorSurface" />
             </LinearLayout>
+            <!-- Replace the old lightThemeSwitch LinearLayout with this -->
+            <!-- Replace the old lightThemeSwitch LinearLayout with this -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="16dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Theme Mode:"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/themeToggleGroup"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:singleSelection="true"
+                    app:selectionRequired="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnThemeSystem"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="@color/toggle_background_selector"
+                        app:strokeColor="@color/chestnut"
+                        android:text="System" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnThemeLight"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="@color/toggle_background_selector"
+                        app:strokeColor="@color/chestnut"
+                        android:text="Light" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnThemeDark"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:backgroundTint="@color/toggle_background_selector"
+                        app:strokeColor="@color/chestnut"
+                        android:text="Dark" />
+
+                </com.google.android.material.button.MaterialButtonToggleGroup>
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -214,7 +275,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Extended Dock:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
                 <com.google.android.material.materialswitch.MaterialSwitch
@@ -224,6 +285,9 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
+
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -235,7 +299,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Expand Input on Focus:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
                 <com.google.android.material.materialswitch.MaterialSwitch
@@ -245,6 +309,7 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -256,7 +321,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Scroll Progress Indicator:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
                 <com.google.android.material.materialswitch.MaterialSwitch
@@ -266,6 +331,7 @@
                     android:checked="true"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -277,7 +343,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Scroll to Top/Bottom Buttons:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
                 <com.google.android.material.materialswitch.MaterialSwitch
@@ -287,6 +353,7 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -298,7 +365,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Volume Keys Scroll to Top/Bottom:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
                 <com.google.android.material.materialswitch.MaterialSwitch
@@ -308,6 +375,7 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -319,7 +387,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Presets Button on Chat Screen:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
                 <com.google.android.material.materialswitch.MaterialSwitch
@@ -329,6 +397,7 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -340,7 +409,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Keep Screen On:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
                 <com.google.android.material.materialswitch.MaterialSwitch
@@ -362,7 +431,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Biometrics Check:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
                 <com.google.android.material.materialswitch.MaterialSwitch
@@ -384,7 +453,7 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Notifications:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
                 <com.google.android.material.materialswitch.MaterialSwitch
@@ -394,22 +463,21 @@
                     android:checked="true"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Auto-disable Web Search:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/autoDisableWebSearchSwitch"
                     android:layout_width="wrap_content"
@@ -417,22 +485,21 @@
                     android:checked="true"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Extended Top Bar:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/extendedTopBarSwitch"
                     android:layout_width="wrap_content"
@@ -440,22 +507,21 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Show Citations:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/showCitationsSwitch"
                     android:layout_width="wrap_content"
@@ -463,22 +529,21 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Copy Button on Notification(instead of Dismiss):"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/copyOrdismissSwitch"
                     android:layout_width="wrap_content"
@@ -486,22 +551,21 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Copy Button on Notification(instead of Open):"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/copyOropenSwitch"
                     android:layout_width="wrap_content"
@@ -509,22 +573,21 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Auto Back after receiving a Share:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/autoBackSwitch"
                     android:layout_width="wrap_content"
@@ -532,22 +595,21 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="OpenRouter Middle-Out Transform:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/openRouterTransformsSwitch"
                     android:layout_width="wrap_content"
@@ -555,22 +617,21 @@
                     android:checked="false"
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_marginTop="16dp"
                 android:gravity="center_vertical">
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Animate border on new message:"
-                    android:textColor="#F8F8F8"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:textStyle="bold" />
-
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/animateBarOnErrorSwitch"
                     android:layout_width="wrap_content"
@@ -579,13 +640,12 @@
                     app:useMaterialThemeColors="true" />
             </LinearLayout>
 
-            <!-- Voice Input Settings -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
                 android:text="Voice Input (STT)"
-                android:textColor="#F8F8F8"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="18sp"
                 android:textStyle="bold" />
 
@@ -594,15 +654,15 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:hint="STT Model ID (e.g., Qwen3-ASR-1.7B-8bit)"
-                app:boxStrokeColor="@color/text_input_box_stroke_selector"
-                app:hintTextColor="@android:color/white"
-                android:textColorHint="@android:color/white">
+                app:boxStrokeColor="?attr/colorOutline"
+                app:hintTextColor="?android:attr/textColorSecondary"
+                android:textColorHint="?android:attr/textColorSecondary">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/voiceInputModelEdit"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@android:color/white"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:inputType="text" />
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -643,10 +703,27 @@
                     app:backgroundTint="@color/toggle_background_selector"
                     app:strokeColor="@color/chestnut"/>
             </com.google.android.material.button.MaterialButtonToggleGroup>
-
-
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp"
+                android:gravity="center_vertical">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Watermark Transcription:"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/watermarkSttSwitch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checked="false"
+                    app:useMaterialThemeColors="true" />
+            </LinearLayout>
         </LinearLayout>
-
     </ScrollView>
-
 </LinearLayout>

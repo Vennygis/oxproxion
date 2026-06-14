@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="#000000"
+        android:background="?attr/colorSurface"
         android:fitsSystemWindows="true"
         tools:context=".ChatFragment">
 
@@ -361,12 +361,12 @@
             android:id="@+id/chatFrameView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:background="#000000"
+            android:background="?attr/colorSurface"
             android:layout_weight="1">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/chatRecyclerView"
-                android:background="#000000"
+                android:background="?attr/colorSurface"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:clipToPadding="false"
@@ -1004,8 +1004,8 @@
                     android:paddingTop="4dp"
                     android:paddingBottom="4dp"
                     android:textSize="16sp"
-                    android:textColor="#C2C2C2"
-                    android:textColorHint="#888888"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:importantForAutofill="no"
                     android:textCursorDrawable="@drawable/cursor_c"
                     android:textColorHighlight="@color/spinner_item_color"

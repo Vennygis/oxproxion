@@ -1,20 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000000"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    android:background="?attr/colorSurface"
+    tools:context=".EditPresetFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="Edit Preset"
-        app:titleTextColor="@android:color/white"
-        android:background="#1C1C1E"
-        app:navigationIcon="@drawable/is_backarrow" />
+        app:titleTextColor="?android:attr/textColorPrimary"
+        android:background="?attr/colorSurface"
+        app:navigationIcon="@drawable/is_backarrow"
+        app:menu="@menu/add_edit_prompt_menu" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -33,18 +36,17 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                app:boxStrokeColor="@color/chestnut"
-                app:hintTextColor="@color/chestnut"
-                android:hint="Preset Title">
+                app:boxStrokeColor="?attr/colorPrimary"
+                app:hintTextColor="?attr/colorPrimary"
+                android:hint="Title">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editPresetTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
+                    android:textColor="?android:attr/textColorPrimary"
                     android:textSize="16sp"
                     android:inputType="textCapWords" />
-
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -52,8 +54,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                app:boxStrokeColor="@color/chestnut"
-                app:hintTextColor="@color/chestnut"
+                app:boxStrokeColor="?attr/colorPrimary"
+                app:hintTextColor="?attr/colorPrimary"
                 app:endIconMode="dropdown_menu"
                 android:hint="Model">
 
@@ -61,8 +63,8 @@
                     android:id="@+id/autoCompleteModel"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/gray"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:textSize="16sp"
                     android:focusable="true"
                     android:clickable="true"
@@ -75,8 +77,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
                 style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
-                app:boxStrokeColor="@color/chestnut"
-                app:hintTextColor="@color/chestnut"
+                app:boxStrokeColor="?attr/colorPrimary"
+                app:hintTextColor="?attr/colorPrimary"
                 app:endIconMode="dropdown_menu"
                 android:hint="System Message">
 
@@ -84,8 +86,9 @@
                     android:id="@+id/autoCompleteSystemMessage"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/gray"
+                    android:gravity="top"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textColorHint="?android:attr/textColorSecondary"
                     android:textSize="16sp"
                     android:focusable="true"
                     android:clickable="true"
@@ -99,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="Streaming"
-                android:textColor="@color/white"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
 
             <com.google.android.material.materialswitch.MaterialSwitch
@@ -108,7 +111,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="Reasoning"
-                android:textColor="@color/white"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
 
             <com.google.android.material.materialswitch.MaterialSwitch
@@ -117,22 +120,24 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:text="Conversation Mode"
-                android:textColor="@color/white"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
+
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switchWebSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
                 android:text="Web Search"
-                android:textColor="@color/white"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp" />
+
             <com.google.android.material.materialswitch.MaterialSwitch
                 android:id="@+id/switchTools"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="32dp"
-                android:textColor="@color/white"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp"
                 android:text="Tools" />
 
@@ -149,17 +154,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="12dp"
                     android:text="Cancel"
-                    app:backgroundTint="@color/gray"
-                    app:strokeColor="@color/gray"
-                    android:textColor="@color/white" />
+                    app:backgroundTint="?attr/colorOutline"
+                    app:strokeColor="?attr/colorOutline"
+                    android:textColor="?attr/colorOnSurface" />
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonSave"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Save"
-                    app:backgroundTint="@color/chestnut"
-                    android:textColor="@color/white" />
+                    app:backgroundTint="?attr/colorPrimary"
+                    android:textColor="?attr/colorOnPrimary" />
 
             </LinearLayout>
 

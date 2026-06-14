@@ -382,6 +382,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
              *   Different models may support a different set of audio file formats.
              *   Non-streaming only. No tools are available for use.
              *   You can use one of these models as an alternate STT by long-pressing the microphone icon in the chat box. Set your STT model in Settings.
+             *   If your have watermark transcription setting on, press and hold the watermark in the main chat screen while you talk. When you lift your finger, your speech is transcribed, copied to the clipboard and entered into the prompt box.
             ---
             
             ## Advanced Reasoning Settings

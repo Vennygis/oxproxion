@@ -1,11 +1,11 @@
-<!-- item_tool_toggle.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="12dp"
-    android:background="#1C1C1E"
+    android:background="?attr/colorSurface"
     android:layout_marginBottom="8dp">
 
     <LinearLayout
@@ -24,20 +24,20 @@
                 android:id="@+id/text_tool_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#F8F8F8"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="?android:attr/textColorPrimary" />
 
             <TextView
                 android:id="@+id/text_tool_desc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="#A8A8A8"
                 android:textSize="14sp"
+                android:textColor="?android:attr/textColorSecondary"
                 android:layout_marginTop="2dp"/>
         </LinearLayout>
 
-        <!-- Changed to MaterialSwitch -->
+        <!-- MaterialSwitch: Uses theme colors automatically -->
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/checkbox_tool"
             android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
         android:id="@+id/text_permission_warning"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#FF6F00"
+        android:textColor="?attr/colorError"
         android:textSize="13sp"
         android:layout_marginTop="4dp"
         android:visibility="gone" />

@@ -32,10 +32,16 @@ class SharedPreferencesHelper(context: Context) {
         this.timeoutListener = listener
     }
     companion object {
+        private const val KEY_WATERMARK_STT_ENABLED = "watermark_stt_enabled"
 
         private const val KEY_VOICE_INPUT_MODEL = "voice_input_model"
         private const val KEY_VOICE_INPUT_PROVIDER = "voice_input_provider" // "lan", "cloud", "off"
+        private const val KEY_THEME_MODE = "theme_mode"
+        const val THEME_SYSTEM = 0
+        const val THEME_LIGHT = 1
+        const val THEME_DARK = 2
         const val LAN_PROVIDER_MLX_LM = "mlx_lm"  // NEW
+
         const val LAN_PROVIDER_HERMES_AGENT = "hermes_agent"  // NEW - Hermes Agent provider
         private const val KEY_AUTO_BACK = "auto_back_enabled"
         private const val KEY_VOLUME_SCROLL = "volume_scroll_enabled"
@@ -425,6 +431,16 @@ class SharedPreferencesHelper(context: Context) {
     fun saveWebSearchMaxResults(results: Int) = mainPrefs.edit {
         putInt("KEY_WEB_SEARCH_MAX_RESULTS", results)
     }
+    fun getThemeMode(): Int {
+        return mainPrefs.getInt(
+            KEY_THEME_MODE,
+            THEME_SYSTEM
+        ) // Default to System
+    }
+
+    fun saveThemeMode(mode: Int) {
+        mainPrefs.edit { putInt(KEY_THEME_MODE, mode) }
+    }
     fun hasMigratedMaverick(): Boolean {
         return mainPrefs.getBoolean("migrated_maverick_to_openrouter", false)
     }
@@ -478,6 +494,11 @@ class SharedPreferencesHelper(context: Context) {
     }
     fun saveKeepScreenOnPreference(enabled: Boolean) {
         mainPrefs.edit { putBoolean(KEY_KEEP_SCREEN_ON, enabled) }
+    }
+    fun getWatermarkSttEnabled(): Boolean = mainPrefs.getBoolean(KEY_WATERMARK_STT_ENABLED, false)
+
+    fun saveWatermarkSttEnabled(enabled: Boolean) {
+        mainPrefs.edit { putBoolean(KEY_WATERMARK_STT_ENABLED, enabled) }
     }
 
     fun getKeepScreenOnPreference(): Boolean {

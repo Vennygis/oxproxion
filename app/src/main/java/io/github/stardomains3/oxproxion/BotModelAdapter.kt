@@ -14,6 +14,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toDrawable
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.MaterialColors
 
 class BotModelAdapter(
     private var models: MutableList<LlmModel>,
@@ -42,13 +43,17 @@ class BotModelAdapter(
     override fun onBindViewHolder(holder: ModelViewHolder, position: Int) {
         val model = models[position]
         holder.modelName.text = model.displayName
-        if (model.apiIdentifier == currentModelId) {
-            val orangeColor = ContextCompat.getColor(holder.itemView.context, R.color.ora)
-            holder.modelName.setTextColor(orangeColor)
-        } else {
-            val defaultColor = ContextCompat.getColor(holder.itemView.context, R.color.white)
-            holder.modelName.setTextColor(defaultColor)
-        }
+
+
+                // ... inside onBindViewHolder ...
+                if (model.apiIdentifier == currentModelId) {
+                    val orangeColor = ContextCompat.getColor(holder.itemView.context, R.color.ora)
+                    holder.modelName.setTextColor(orangeColor)
+                } else {
+                    // Pulls the dynamic primary text color from the current theme (Black for light mode, White for dark mode)
+                    val defaultColor = MaterialColors.getColor(holder.itemView, android.R.attr.textColorPrimary)
+                    holder.modelName.setTextColor(defaultColor)
+                }
         val iconRes = when {
             model.isTranscription -> R.drawable.ic_mic
             model.isImageGenerationCapable -> R.drawable.ic_palette

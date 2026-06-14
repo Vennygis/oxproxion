@@ -1,4 +1,4 @@
-<!-- res/layout/fragment_open_router_models.xml -->
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -6,18 +6,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="#000000">
+    android:background="?attr/colorSurface"
+    tools:context=".OpenRouterModelsFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="OpenRouter Models"
-        app:titleTextColor="@android:color/white"
-        android:background="#1C1C1E"
-        app:menu="@menu/open_router_models_menu"
-        app:navigationIcon="@drawable/is_backarrow" />
+        app:titleTextColor="?android:attr/textColorPrimary"
+        android:background="?attr/colorSurface"
+        app:navigationIcon="@drawable/is_backarrow"
+        app:menu="@menu/open_router_models_menu" />
 
+    <!-- RESTORED: infoCard ID added here -->
     <androidx.cardview.widget.CardView
         android:id="@+id/infoCard"
         android:layout_width="match_parent"
@@ -26,7 +28,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        app:cardBackgroundColor="#2C2C2E"
+        app:cardBackgroundColor="?attr/colorSurfaceVariant"
         app:cardCornerRadius="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -38,24 +40,25 @@
                 android:id="@+id/infoText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Tap a model to add it to your list. Tap the icon to the right to open the model's webpage in your browser."
-                android:textColor="@android:color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/closeInfoButton"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginEnd="8dp"/>
+                android:layout_marginEnd="8dp"
+                android:text="Tap a model to add it to your list. Tap the icon to the right to open the model's webpage in your browser."
+                android:textColor="?android:attr/textColorPrimary" />
 
+            <!-- RESTORED: closeInfoButton ID added here -->
             <ImageView
                 android:id="@+id/closeInfoButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_close"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:contentDescription="Close"
-                app:tint="@android:color/white" />
+                app:tint="?android:attr/textColorSecondary"
+                android:src="@drawable/ic_close" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
@@ -65,7 +68,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp">
 
-        <!-- Existing sort bar -->
+        <!-- Sort Bar -->
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/sortBar"
             android:layout_width="0dp"
@@ -81,9 +84,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Alphabetical"
-                style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
-                app:strokeColor="@color/chestnut"/>
+                app:strokeColor="@color/chestnut"
+                style="?attr/materialButtonOutlinedStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/sortDateButton"
@@ -91,12 +94,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Newest"
-                style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
-                app:strokeColor="@color/chestnut"/>
+                app:strokeColor="@color/chestnut"
+                style="?attr/materialButtonOutlinedStyle" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <!-- Updated type filter bar with Transcription -->
+        <!-- Type Filter Bar -->
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/filterBar"
             android:layout_width="0dp"
@@ -113,9 +116,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="All"
-                style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
-                app:strokeColor="@color/chestnut"/>
+                app:strokeColor="@color/chestnut"
+                style="?attr/materialButtonOutlinedStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/filterVisionButton"
@@ -123,9 +126,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Vision"
-                style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
-                app:strokeColor="@color/chestnut"/>
+                app:strokeColor="@color/chestnut"
+                style="?attr/materialButtonOutlinedStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/filterImageGenButton"
@@ -133,9 +136,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Image Gen"
-                style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
-                app:strokeColor="@color/chestnut"/>
+                app:strokeColor="@color/chestnut"
+                style="?attr/materialButtonOutlinedStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/filterTranscriptionButton"
@@ -143,12 +146,12 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Transc."
-                style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
-                app:strokeColor="@color/chestnut"/>
+                app:strokeColor="@color/chestnut"
+                style="?attr/materialButtonOutlinedStyle" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
 
-        <!-- NEW: Cost filter bar below the type filter bar -->
+        <!-- Cost Filter Bar -->
         <com.google.android.material.button.MaterialButtonToggleGroup
             android:id="@+id/costFilterBar"
             android:layout_width="0dp"
@@ -165,9 +168,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="All"
-                style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
-                app:strokeColor="@color/chestnut"/>
+                app:strokeColor="@color/chestnut"
+                style="?attr/materialButtonOutlinedStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/costFilterFreeButton"
@@ -175,9 +178,9 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Free"
-                style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
-                app:strokeColor="@color/chestnut"/>
+                app:strokeColor="@color/chestnut"
+                style="?attr/materialButtonOutlinedStyle" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/costFilterPaidButton"
@@ -185,10 +188,11 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Paid"
-                style="?attr/materialButtonOutlinedStyle"
                 app:backgroundTint="@color/toggle_background_selector"
-                app:strokeColor="@color/chestnut"/>
+                app:strokeColor="@color/chestnut"
+                style="?attr/materialButtonOutlinedStyle" />
         </com.google.android.material.button.MaterialButtonToggleGroup>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -197,6 +201,7 @@
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/list_item_open_router_model"
         android:scrollbars="vertical"/>
 
 </LinearLayout>

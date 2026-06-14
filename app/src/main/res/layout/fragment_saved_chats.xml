@@ -5,19 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000000"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true"
-    tools:context="io.github.stardomains3.oxproxion.SavedChatsFragment">
+    tools:context="SavedChatsFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        app:title="Saved Chats"
-        app:titleTextColor="@android:color/white"
-        android:background="#1C1C1E"
+        android:background="?attr/colorSurface"
         app:navigationIcon="@drawable/is_backarrow"
-        app:menu="@menu/saved_chats_menu" />
+        app:menu="@menu/saved_chats_menu"
+        app:title="Saved Chats"
+        app:titleTextColor="?android:attr/textColorPrimary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/savedChatsRecyclerView"
@@ -25,6 +25,6 @@
         android:layout_height="0dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
 </LinearLayout>

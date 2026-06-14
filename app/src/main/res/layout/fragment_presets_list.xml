@@ -1,40 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="#000000"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true">
+    android:orientation="vertical"
+    android:background="?attr/colorSurface"
+    android:fitsSystemWindows="true"
+    tools:context=".PresetsListFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorSurface"
+        app:navigationIcon="@drawable/is_backarrow"
         app:title="Presets"
-        app:titleTextColor="@android:color/white"
-        android:background="#1C1C1E"
-        app:navigationIcon="@drawable/is_backarrow">
+        app:titleTextColor="?android:attr/textColorPrimary" >
 
-        <!-- NEW: MaterialSwitch as direct child (positions on right, one-tap toggle) -->
+        <!-- Note: If you want the switch to look like the Settings layout,
+             it is best placed inside a LinearLayout within the Toolbar or
+             handled via a Menu. For now, I have kept your structure but themed it. -->
         <com.google.android.material.materialswitch.MaterialSwitch
             android:id="@+id/switchClearChat"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
             android:layout_gravity="end|center_vertical"
             android:text="Clear chat?"
-            android:textSize="14sp"
-            android:layout_marginEnd="8dp"
-        android:contentDescription="Toggle to clear chat history when applying a preset"
-        />
-
+            android:contentDescription="Toggle to clear chat history when applying a preset"
+            app:useMaterialThemeColors="true" />
     </com.google.android.material.appbar.MaterialToolbar>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewPresets"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:padding="8dp"
         android:scrollbars="vertical"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
@@ -44,8 +50,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="16dp"
+        android:contentDescription="Add Preset"
         android:src="@drawable/ic_addmod"
-        android:backgroundTint="@color/chestnut"
-        android:contentDescription="Add Preset" />
+        app:backgroundTint="?attr/colorPrimary"
+        app:tint="?attr/colorOnPrimary" />
 
 </LinearLayout>

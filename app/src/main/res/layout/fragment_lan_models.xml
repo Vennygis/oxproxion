@@ -1,21 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="#000000">
+    android:background="?attr/colorSurface"
+    tools:context=".LanModelsFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="LAN Models"
-        app:titleTextColor="@android:color/white"
-        android:background="#1C1C1E"
-        app:menu="@menu/lan_models_menu"
-        app:navigationIcon="@drawable/is_backarrow" />
+        app:titleTextColor="?android:attr/textColorPrimary"
+        android:background="?attr/colorSurface"
+        app:navigationIcon="@drawable/is_backarrow"
+        app:menu="@menu/lan_models_menu" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewLanModels"
@@ -23,6 +25,7 @@
         android:layout_height="match_parent"
         android:cacheColorHint="@android:color/transparent"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/list_item_lan_model"
         android:scrollbars="vertical"/>
 
 </LinearLayout>

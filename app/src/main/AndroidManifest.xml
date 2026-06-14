@@ -53,7 +53,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcherrobot"
         android:supportsRtl="true"
-        android:theme="@style/Base.Theme.Oxproxion">
+        android:theme="@style/Theme.Oxproxion">
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="io.github.stardomains3.oxproxion.fileprovider"
@@ -71,7 +71,8 @@
             android:name=".MainActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:launchMode="singleTask"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -94,7 +95,7 @@
             android:taskAffinity=":assistant_task"
             android:launchMode="singleInstance"
             android:exported="true"
-            android:theme="@style/Base.Theme.Oxproxion">
+            android:theme="@style/Theme.Oxproxion">
             <intent-filter>
                 <action android:name="android.intent.action.ASSIST" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -124,7 +125,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/Base.Theme.Oxproxion">
+            android:theme="@style/Theme.Oxproxion">
             <intent-filter android:label="Auto Send">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -138,7 +139,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/Base.Theme.Oxproxion">
+            android:theme="@style/Theme.Oxproxion">
             <intent-filter android:label="System Message Chooser">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -152,7 +153,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateAlwaysHidden"
-            android:theme="@style/Base.Theme.Oxproxion">
+            android:theme="@style/Theme.Oxproxion">
             <intent-filter android:label="Presets">
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />

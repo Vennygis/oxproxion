@@ -133,6 +133,12 @@ data class ToolItem(
                 displayName = "Sound Mode",
                 description = "Gets or sets the device ringer mode (Normal, Vibrate, Silent).",
                 isEnabled = "set_sound_mode" in enabledSet
+            ),
+            ToolItem(
+                name = "wait",
+                displayName = "Wait / Delay",
+                description = "Pauses execution for a specified duration (10-600 seconds). Use for timed delays between repeated actions.",
+                isEnabled = "wait" in enabledSet
             )
 
             // Add more tools here as your app grows

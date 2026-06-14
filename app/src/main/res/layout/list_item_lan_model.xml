@@ -1,19 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="16dp"
     android:gravity="center_vertical"
-    android:background="?android:attr/selectableItemBackground">
+    android:background="?attr/selectableItemBackground">
 
     <ImageView
         android:id="@+id/iconModelType"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="16dp"
-        app:srcCompat="@drawable/ic_lan" />
+        app:srcCompat="@drawable/ic_lan"
+        app:tint="?android:attr/textColorSecondary" />
 
     <LinearLayout
         android:layout_width="0dp"
@@ -26,40 +28,42 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Model ID"
-            android:textColor="@android:color/white"
             android:textSize="16sp"
-            android:textStyle="bold"/>
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"
+            tools:text="Llama-3-8B" />
 
         <TextView
             android:id="@+id/textModelDisplayName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Model Name"
-            android:textColor="@android:color/darker_gray"
-            android:textSize="14sp"/>
+            android:textSize="14sp"
+            android:textColor="?android:attr/textColorSecondary"
+            tools:text="Llama 3 8B Instruct" />
     </LinearLayout>
 
-    <!-- Eject button for loaded llama.cpp models -->
+    <!-- Eject button -->
     <ImageButton
         android:id="@+id/btnEject"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-
         android:padding="12dp"
         android:src="@drawable/ic_eject"
+        android:visibility="gone"
+        app:tint="?android:attr/textColorSecondary" />
 
-        android:visibility="gone" />
     <ImageButton
         android:id="@+id/btnLoad"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:background="?attr/selectableItemBackgroundBorderless"
-
         android:padding="12dp"
         android:src="@drawable/ic_loadmodel"
+        android:visibility="gone"
+        app:tint="?android:attr/textColorSecondary" />
 
-        android:visibility="gone" />
     <ProgressBar
         android:id="@+id/progressLoading"
         android:layout_width="48dp"

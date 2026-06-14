@@ -30,12 +30,11 @@ class SystemMessageAdapter(
         val context = holder.itemView.context
         if (systemMessage.title == selectedMessage.title && systemMessage.prompt == selectedMessage.prompt) {
             holder.title.setTextColor(ContextCompat.getColor(context, R.color.ora))
-            holder.prompt.setTextColor(ContextCompat.getColor(context, R.color.white))
+            //  holder.prompt.setTextColor(ContextCompat.getColor(context, R.color.ora))
         } else {
-            holder.title.setTextColor(ContextCompat.getColor(context, R.color.white))
-            holder.prompt.setTextColor(ContextCompat.getColor(context, R.color.white))
+            // holder.title.setTextColor(ContextCompat.getColor(context, R.color.white))
+            // holder.prompt.setTextColor(ContextCompat.getColor(context, R.color.white))
         }
-
 
         // Bind expand/collapse state
         holder.prompt.visibility = if (systemMessage.isExpanded) View.VISIBLE else View.GONE

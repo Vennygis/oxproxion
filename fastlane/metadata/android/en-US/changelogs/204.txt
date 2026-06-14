@@ -1,0 +1,2 @@
+- A user requested a light theme, so you can now select that in settings. This is an initial usable version of it.
+- Added an option to be able to use the Speech-to-Text model in settings for general voice transcription. If you have an STT model inputted and this setting on, press and hold the watermark in the main chat screen while you talk. When you lift your finger, your speech is transcribed, copied to the clipboard and entered into the prompt box.

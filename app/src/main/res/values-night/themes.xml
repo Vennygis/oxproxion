@@ -1,19 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <!-- Base application theme. -->
-    <style name="Base.Theme.Oxproxion" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="colorPrimary">#C2C2C2</item>
+
+    <style name="Theme.Oxproxion" parent="Theme.Material3.Dark.NoActionBar">
+        <item name="android:windowBackground">#000000</item>
+        <item name="colorSurface">#000000</item>
+        <item name="colorOnSurface">#C2C2C2</item> <item name="colorPrimary">#C2C2C2</item>
         <item name="colorOnPrimary">@color/black</item>
-        <item name="android:textColorHighlight">#007541</item>
-        <item name="materialAlertDialogTheme">@style/CustomMaterialAlertDialogTheme</item>
-        <item name="colorControlNormal">#C2C2C2</item>
+        <item name="android:textColorHighlight">#007541</item> <item name="colorControlActivated">@color/your_orange_color</item> <item name="colorControlNormal">#C2C2C2</item>
         <item name="android:colorControlNormal">#C2C2C2</item>
-        <item name="colorControlActivated">@color/your_orange_color</item>
         <item name="colorOutline">#686868</item>
+        <item name="colorSurfaceVariant">#121212</item>
+
+        <item name="android:statusBarColor">?attr/colorSurface</item>
+        <item name="android:navigationBarColor">?attr/colorSurface</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+
+        <item name="materialAlertDialogTheme">@style/CustomMaterialAlertDialogTheme</item>
     </style>
+
     <style name="Widget.App.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="buttonTint">@color/button_tint</item>
         <item name="buttonIconTint">@color/button_icon_tint</item>
     </style>
+
     <style name="CustomMaterialAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
         <item name="android:backgroundDimAmount">0.8</item>
         <item name="shapeAppearanceMediumComponent">@style/ff</item>
@@ -40,46 +50,42 @@
     </style>
 
     <style name="CustomDialogBodyText" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:textSize">16sp</item> <!-- Standard body size example -->
-        <item name="android:textColor">#C2C2C2</item> <!-- Light gray for message readability -->
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#C2C2C2</item>
     </style>
 
     <style name="CustomDialogTitleText" parent="MaterialAlertDialog.Material3.Title.Text">
-        <item name="android:textSize">24sp</item> <!-- Larger title size example -->
-        <item name="android:textColor">#C2C2C2</item> <!-- Reinforce color if needed -->
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">#C2C2C2</item>
         <item name="android:textStyle">bold</item>
     </style>
-    <style name="MyEditTextTheme" parent="ThemeOverlay.AppCompat.Light">
-        <!-- Replace #FF0000 with the color you want for the underline -->
-        <item name="colorControlActivated">#FF9800</item>
-        <item name="colorControlNormal">#79480a</item>   <!-- underline when not focused -->
-    </style>
+
     <style name="RoundedCornersDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
-        <!-- Set the custom drawable as the window background -->
         <item name="android:backgroundDimAmount">0.8</item>
         <item name="android:windowBackground">@drawable/rounded_dialog_background</item>
-        <!-- Optional: Remove default title bar if not using AlertDialog.Builder's title -->
         <item name="android:windowNoTitle">true</item>
-        <!-- Ensure it's floating (standard dialog behavior) -->
         <item name="android:windowIsFloating">true</item>
-
-        <!-- Make sure it's not translucent if you want a solid background -->
         <item name="android:windowIsTranslucent">false</item>
-        <!-- Remove any default content overlay -->
-
         <item name="android:windowContentOverlay">@null</item>
         <item name="colorAccent">#C2C2C2</item>
         <item name="colorPrimary">#C2C2C2</item>
-        <!-- Remove default padding around the window content -->
-        <!--  <item name="android:windowBackgroundDimAmount">0.6</item>  Adjust dimming behind dialog -->
     </style>
-    <style name="Theme.Oxproxion.AIFix" parent="Base.Theme.Oxproxion">
+
+    <style name="MyEditTextTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="colorControlActivated">#FF9800</item>
+        <item name="colorControlNormal">#79480a</item>
+    </style>
+
+
+
+    <style name="Theme.Oxproxion.AIFix" parent="Theme.Oxproxion">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:backgroundDimAmount">0.5</item> <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimAmount">0.5</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
 </resources>

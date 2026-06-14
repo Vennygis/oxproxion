@@ -45,10 +45,10 @@
                 android:layout_height="wrap_content"
                 android:gravity="start|top"
                 android:text="User message here"
-                android:textColor="#F8F8F8"
-                android:linksClickable="true"
+                android:textColor="?android:attr/textColorPrimary"
                 android:textSize="16sp"
                 android:textIsSelectable="true"
+                android:linksClickable="true"
                 android:textColorLink="@android:color/holo_blue_dark"
                 app:layout_constrainedWidth="true"
                 app:layout_constraintHorizontal_bias="1.0"
@@ -89,6 +89,7 @@
                 android:src="@drawable/ic_redo"
                 android:visibility="visible"
                 app:tint="#777777" />
+            <!-- New delete button (after resend) OLD COLOR #222f3d-->
             <ImageButton
                 android:id="@+id/deleteButton"
                 android:layout_width="32dp"
@@ -100,7 +101,6 @@
                 android:src="@drawable/ic_trash"
                 android:visibility="visible"
                 app:tint="#777777" />
-
 
             <!-- Edit button (middle) -->
             <ImageButton

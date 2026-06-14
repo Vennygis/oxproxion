@@ -51,6 +51,7 @@ import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
@@ -68,6 +69,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -160,6 +162,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
     private var selectedAudioBytes: ByteArray? = null
     private var selectedAudioFormat: String? = null
     private var doVolScroll: Boolean = false
+    private var fromWater: Boolean = false
     private lateinit var plusButton: MaterialButton
     private lateinit var btnDecreaseFont: MaterialButton
     private lateinit var btnIncreaseFont: MaterialButton
@@ -803,6 +806,16 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
         viewModel.chatMessages.observe(viewLifecycleOwner) { messages ->
             chatAdapter.setMessages(messages)
             val hasMessages = messages.isNotEmpty()
+            val isFeatureEnabled = sharedPreferencesHelper.getWatermarkSttEnabled()
+            if (hasMessages || !isFeatureEnabled) {
+                // Disable if chat has messages OR feature is turned off in settings
+                centerWatermarkIcon.isClickable = false
+
+            } else {
+                // Enable if chat is empty AND feature is ON
+                centerWatermarkIcon.isClickable = true
+
+            }
             if(hasMessages){
                 resetChatButton.icon.alpha = 255
                 saveChatButton.icon.alpha = 255
@@ -1328,6 +1341,21 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
         updateModelSourceIndicator()
         val savedScale = sharedPreferencesHelper.getFontSizeCh()
         chatAdapter.updateFontSize(savedScale)
+        rootView.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+            override fun onGlobalLayout() {
+                // 1. IMPORTANT: Remove the listener immediately so it doesn't fire
+                // every time the layout changes (like when a message arrives)
+                view.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                val mode = when (sharedPreferencesHelper.getThemeMode()) {
+                    SharedPreferencesHelper.THEME_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+                    SharedPreferencesHelper.THEME_DARK  -> AppCompatDelegate.MODE_NIGHT_YES
+                    else                               -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                }
+                AppCompatDelegate.setDefaultNightMode(mode)
+
+            }
+        })
         // end onviewcreated
     }
 
@@ -2014,6 +2042,55 @@ $cleanContent
                 }
                 .show()
         }
+        centerWatermarkIcon.setOnTouchListener { v, event ->
+            // Check if the feature is enabled in settings
+            val isFeatureEnabled = sharedPreferencesHelper.getWatermarkSttEnabled()
+
+            // Only allow interaction if feature is ON and chat is empty
+            val isChatEmpty = viewModel.chatMessages.value.isNullOrEmpty()
+
+            if (!isFeatureEnabled || !isChatEmpty) {
+                return@setOnTouchListener false
+            }
+
+            when (event.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    // START RECORDING
+                    if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+                        permissionLauncher.launch(Manifest.permission.RECORD_AUDIO)
+                    } else {
+                        startVoiceRecording()
+                        fromWater = true
+                        // Visual Feedback: Grow the icon
+                        v.animate()
+                            .scaleX(2.6f)
+                            .scaleY(2.6f)
+                            .setDuration(300)
+                            .start()
+                    }
+                    true // Consume event
+                }
+
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    // STOP RECORDING
+                    if (isRecording) {
+                        stopVoiceRecording()
+
+                        // Visual Feedback: Reset icon size
+                        v.animate()
+                            .scaleX(1.0f)
+                            .scaleY(1.0f)
+                            .setDuration(300)
+                            .start()
+                    }
+                    true // Consume event
+                }
+                else -> false
+            }
+        }
+
+// IMPORTANT: Remove the OnLongClickListener to prevent conflict with OnTouchListener
+        centerWatermarkIcon.setOnLongClickListener { true }
         topReasoningButton.setOnClickListener { reasoningButton.performClick() }
         topWebSearchButton.setOnClickListener { webSearchButton.performClick() }
         topStreamButton.setOnClickListener { streamButton.performClick() }
@@ -2439,7 +2516,7 @@ $cleanContent
 
             // Define font options (display name, font res ID or null for system default, style res ID)
             val fontOptions = listOf(
-                Triple("System Default", null, R.style.Base_Theme_Oxproxion),
+                Triple("System Default", null, R.style.Theme_Oxproxion),
                 Triple("Alan Sans Regular", R.font.alansans_regular, R.style.Font_AlanSansRegular),
                 Triple("Atkinson Mono", R.font.atkinsonhyperlegiblemono_regular, R.style.Font_AtkinsonhyperlegiblemonoRegular),
                 Triple("Atkinson Next", R.font.atkinsonhyperlegiblenext_regular, R.style.Font_AtkinsonhyperlegiblenextRegular),
@@ -3082,13 +3159,28 @@ $cleanContent
         headerContainer.visibility = View.VISIBLE
         (chatFrameView as ViewGroup).bringChildToFront(headerContainer)
         dimOverlay?.visibility = View.VISIBLE
+        centerWatermarkIcon.animate()
+            .alpha(0f)
+            .setDuration(300)
+            .start()
 
     }
     private fun hideMenu() {
         dimOverlay?.visibility = View.GONE
         headerContainer.visibility = View.GONE
         overlayView?.visibility = View.GONE
+
+        // Only restore watermark if the chat is empty
+        val hasMessages = !(viewModel.chatMessages.value.isNullOrEmpty())
+        if (!hasMessages) {
+            centerWatermarkIcon.visibility = View.VISIBLE
+            centerWatermarkIcon.animate()
+                .alpha(0.50f)
+                .setDuration(300)
+                .start()
+        }
     }
+
     private fun scrollToPreviousScreen() {
         chatRecyclerView.post {
             val height = chatRecyclerView.height
@@ -4181,8 +4273,9 @@ $cleanContent
                     file.readBytes()
                 }
 
-                Toast.makeText(requireContext(), "Transcribing...", Toast.LENGTH_SHORT).show()
-
+                if(!fromWater) {
+                    Toast.makeText(requireContext(), "Transcribing...", Toast.LENGTH_SHORT).show()
+                }
                 val transcribedText = viewModel.transcribeAudioForInput(
                     audioBytes = audioBytes,
                     audioFormat = "opus",
@@ -4190,6 +4283,10 @@ $cleanContent
                 )
 
                 if (!transcribedText.isNullOrBlank()) {
+                    if(fromWater){
+                        val clipboard = requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                        val clip = ClipData.newPlainText("Transcribed Text", transcribedText)
+                        clipboard.setPrimaryClip(clip)}
                     chatEditText.setText(transcribedText)
                     chatEditText.setSelection(transcribedText.length)
                     // Toast.makeText(requireContext(), "Transcription complete", Toast.LENGTH_SHORT).show()
@@ -4202,6 +4299,7 @@ $cleanContent
             } finally {
                 file.delete()
                 voiceRecordFile = null
+                fromWater = false
             }
         }
     }

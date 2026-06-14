@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000000"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true"
     android:padding="16dp">
 
@@ -13,8 +13,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="Manage Tools"
-        app:titleTextColor="@android:color/white"
-        android:background="#1C1C1E"
+        app:titleTextColor="?android:attr/textColorPrimary"
+        android:background="?attr/colorSurface"
         app:navigationIcon="@drawable/is_backarrow" />
 
     <ScrollView

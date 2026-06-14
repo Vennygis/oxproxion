@@ -1,27 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-    <style name="Base.Theme.Oxproxion" parent="Theme.Material3.Dark.NoActionBar">
-        <item name="colorPrimary">#C2C2C2</item>
-        <item name="colorOnPrimary">@color/black</item>
+
+    <style name="Theme.Oxproxion" parent="Theme.Material3.Light.NoActionBar">
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="colorSurface">@android:color/white</item>
+        <item name="colorOnSurface">#121212</item>
+        <item name="colorPrimary">#222f3d</item>
+        <item name="colorOnPrimary">@android:color/white</item>
         <item name="android:textColorHighlight">#007541</item>
-        <item name="materialAlertDialogTheme">@style/CustomMaterialAlertDialogTheme</item>
-        <item name="colorControlNormal">#C2C2C2</item>
-        <item name="android:colorControlNormal">#C2C2C2</item>
         <item name="colorControlActivated">@color/your_orange_color</item>
-        <item name="colorOutline">#686868</item>
-        <item name="android:statusBarColor">?attr/colorSurface</item>
-        <item name="android:navigationBarColor">?attr/colorSurface</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <item name="android:windowLightNavigationBar">false</item>
+        <item name="colorControlNormal">#686868</item>
+        <item name="android:colorControlNormal">#686868</item>
+        <item name="colorOutline">#888888</item>
+        <item name="colorSurfaceVariant">#F5F5F5</item>
+
+
+
+        <item name="android:statusBarColor">@android:color/white</item>
+        <item name="android:navigationBarColor">@android:color/white</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+
+        <item name="materialAlertDialogTheme">@style/CustomMaterialAlertDialogTheme</item>
     </style>
+
     <style name="Widget.App.CheckBox" parent="Widget.Material3.CompoundButton.CheckBox">
         <item name="buttonTint">@color/button_tint</item>
         <item name="buttonIconTint">@color/button_icon_tint</item>
     </style>
+
     <style name="CustomMaterialAlertDialogTheme" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog">
-        <item name="android:backgroundDimAmount">0.8</item>
+        <item name="android:backgroundDimAmount">0.6</item>
         <item name="shapeAppearanceMediumComponent">@style/ff</item>
-        <item name="android:textColorPrimary">#C2C2C2</item>
-        <item name="colorPrimary">#C2C2C2</item>
+        <item name="android:textColorPrimary">#121212</item>
+        <item name="colorPrimary">#222f3d</item>
         <item name="materialAlertDialogTitleTextStyle">@style/CustomDialogTitleText</item>
         <item name="materialAlertDialogBodyTextStyle">@style/CustomDialogBodyText</item>
         <item name="android:colorAccent">@color/your_orange_color</item>
@@ -33,135 +45,76 @@
     </style>
 
     <style name="CustomDialogTheme" parent="ThemeOverlay.Material3.Dialog.Alert">
-        <item name="colorSurface">#471d0d</item>
-        <item name="android:background">#471d0d</item>
-        <item name="android:backgroundDimAmount">0.8</item>
-        <item name="android:textColorPrimary">#C2C2C2</item>
-        <item name="colorPrimary">#C2C2C2</item>
+        <item name="colorSurface">#F5F5F5</item> <item name="android:background">#F5F5F5</item>
+        <item name="android:backgroundDimAmount">0.6</item>
+        <item name="android:textColorPrimary">#121212</item>
+        <item name="colorPrimary">#222f3d</item>
         <item name="materialAlertDialogTitleTextStyle">@style/CustomDialogTitleText</item>
         <item name="materialAlertDialogBodyTextStyle">@style/CustomDialogBodyText</item>
     </style>
 
     <style name="CustomDialogBodyText" parent="TextAppearance.Material3.BodyMedium">
-        <item name="android:textSize">16sp</item> <!-- Standard body size example -->
-        <item name="android:textColor">#C2C2C2</item> <!-- Light gray for message readability -->
-    </style>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">#333333</item> </style>
 
     <style name="CustomDialogTitleText" parent="MaterialAlertDialog.Material3.Title.Text">
-        <item name="android:textSize">24sp</item> <!-- Larger title size example -->
-        <item name="android:textColor">#C2C2C2</item> <!-- Reinforce color if needed -->
+        <item name="android:textSize">24sp</item>
+        <item name="android:textColor">#121212</item>
         <item name="android:textStyle">bold</item>
     </style>
+
     <style name="RoundedCornersDialog" parent="Theme.MaterialComponents.DayNight.Dialog">
-        <!-- Set the custom drawable as the window background -->
-        <item name="android:backgroundDimAmount">0.8</item>
+        <item name="android:backgroundDimAmount">0.6</item>
         <item name="android:windowBackground">@drawable/rounded_dialog_background</item>
-        <!-- Optional: Remove default title bar if not using AlertDialog.Builder's title -->
         <item name="android:windowNoTitle">true</item>
-        <!-- Ensure it's floating (standard dialog behavior) -->
         <item name="android:windowIsFloating">true</item>
-
-        <!-- Make sure it's not translucent if you want a solid background -->
         <item name="android:windowIsTranslucent">false</item>
-        <!-- Remove any default content overlay -->
-
         <item name="android:windowContentOverlay">@null</item>
-        <item name="colorAccent">#C2C2C2</item>
-        <item name="colorPrimary">#C2C2C2</item>
-        <!-- Remove default padding around the window content -->
-        <!--  <item name="android:windowBackgroundDimAmount">0.6</item>  Adjust dimming behind dialog -->
+        <item name="colorAccent">@color/your_orange_color</item>
+        <item name="colorPrimary">#222f3d</item>
     </style>
+
     <style name="MyEditTextTheme" parent="ThemeOverlay.AppCompat.Light">
-        <!-- Replace #FF0000 with the color you want for the underline -->
         <item name="colorControlActivated">#FF9800</item>
-        <item name="colorControlNormal">#79480a</item>   <!-- underline when not focused -->
+        <item name="colorControlNormal">#79480a</item>
     </style>
-    <style name="Font.AlanSansRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/alansans_regular</item>
-    </style>
-    <style name="Font.AlexandriaRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/alexandria_regular</item>
-    </style>
-    <style name="Font.AroneSansRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/aronesans_regular</item>
-    </style>
-    <style name="Font_AtkinsonhyperlegiblemonoRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/atkinsonhyperlegiblemono_regular</item>
-    </style>
-    <style name="Font_AtkinsonhyperlegiblenextRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/atkinsonhyperlegiblenext_regular</item>
-    </style>
-    <style name="Font.FunnelDisplayRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/funneldisplay_regular</item>
-    </style>
-    <style name="Font.GeologicaLight" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/geologica_light</item>
-    </style>
-    <style name="Font.GoogleSansFlexRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/googlesansflex_regular</item>
-    </style>
-    <style name="Font.InstrumentSansRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/instrumentsans_regular</item>
-    </style>
-    <style name="Font.LexendRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/lexend_regular</item>
-    </style>
-    <style name="Font.Merriweather24ptRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/merriweather_24pt_regular</item>
-    </style>
-    <style name="Font.MerriweathersansLight" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/merriweathersans_light</item>
-    </style>
-    <style name="Font.MPlus2Regular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/mplus2_regular</item>
-    </style>
-    <style name="Font.NokoraRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/nokora_regular</item>
-    </style>
-    <style name="Font.NotoSansRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/notosans_regular</item>
-    </style>
-    <style name="Font.NotoSerifRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/notoserif_regular</item>
-    </style>
-    <style name="Font.OpenSansRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/opensans_regular</item>
-    </style>
-    <style name="Font.OutfitRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/outfit_regular</item>
-    </style>
-    <style name="Font.PoppinsRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/poppins_regular</item>
-    </style>
-    <style name="Font.ReadexProRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/readexpro_regular</item>
-    </style>
-    <style name="Font.RobotoRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/roboto_regular</item>
-    </style>
-    <style name="Font.RobotoSerifRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/robotoserif_regular</item>
-    </style>
-    <style name="Font.SourceSerif4Regular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/sourceserif4_regular</item>
-    </style>
-    <style name="Font.TasaOrbiterRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/tasaorbiter_regular</item>
-    </style>
-    <style name="Font.UbuntuSansRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/ubuntusans_regular</item>
-    </style>
-    <style name="Font.VendSansRegular" parent="Base.Theme.Oxproxion">
-        <item name="fontFamily">@font/vendsans_regular</item>
-    </style>
-    <style name="Theme.Oxproxion" parent="Base.Theme.Oxproxion" />
-    <style name="Theme.Oxproxion.AIFix" parent="Base.Theme.Oxproxion">
+    <style name="Font.AlanSansRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/alansans_regular</item></style>
+    <style name="Font.AlexandriaRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/alexandria_regular</item></style>
+    <style name="Font.AroneSansRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/aronesans_regular</item></style>
+    <style name="Font_AtkinsonhyperlegiblemonoRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/atkinsonhyperlegiblemono_regular</item></style>
+    <style name="Font_AtkinsonhyperlegiblenextRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/atkinsonhyperlegiblenext_regular</item></style>
+    <style name="Font.FunnelDisplayRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/funneldisplay_regular</item></style>
+    <style name="Font.GeologicaLight" parent="Theme.Oxproxion"><item name="fontFamily">@font/geologica_light</item></style>
+    <style name="Font.GoogleSansFlexRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/googlesansflex_regular</item></style>
+    <style name="Font.InstrumentSansRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/instrumentsans_regular</item></style>
+    <style name="Font.LexendRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/lexend_regular</item></style>
+    <style name="Font.Merriweather24ptRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/merriweather_24pt_regular</item></style>
+    <style name="Font.MerriweathersansLight" parent="Theme.Oxproxion"><item name="fontFamily">@font/merriweathersans_light</item></style>
+    <style name="Font.MPlus2Regular" parent="Theme.Oxproxion"><item name="fontFamily">@font/mplus2_regular</item></style>
+    <style name="Font.NokoraRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/nokora_regular</item></style>
+    <style name="Font.NotoSansRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/notosans_regular</item></style>
+    <style name="Font.NotoSerifRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/notoserif_regular</item></style>
+    <style name="Font.OpenSansRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/opensans_regular</item></style>
+    <style name="Font.OutfitRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/outfit_regular</item></style>
+    <style name="Font.PoppinsRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/poppins_regular</item></style>
+    <style name="Font.ReadexProRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/readexpro_regular</item></style>
+    <style name="Font.RobotoRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/roboto_regular</item></style>
+    <style name="Font.RobotoSerifRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/robotoserif_regular</item></style>
+    <style name="Font.SourceSerif4Regular" parent="Theme.Oxproxion"><item name="fontFamily">@font/sourceserif4_regular</item></style>
+    <style name="Font.TasaOrbiterRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/tasaorbiter_regular</item></style>
+    <style name="Font.UbuntuSansRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/ubuntusans_regular</item></style>
+    <style name="Font.VendSansRegular" parent="Theme.Oxproxion"><item name="fontFamily">@font/vendsans_regular</item></style>
+
+
+
+    <style name="Theme.Oxproxion.AIFix" parent="Theme.Oxproxion">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowContentOverlay">@null</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
         <item name="android:backgroundDimEnabled">true</item>
-        <item name="android:backgroundDimAmount">0.5</item> <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:backgroundDimAmount">0.4</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
     </style>
 </resources>

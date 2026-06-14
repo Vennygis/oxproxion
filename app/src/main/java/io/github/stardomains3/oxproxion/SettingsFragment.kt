@@ -1,3 +1,4 @@
+
 package io.github.stardomains3.oxproxion
 
 import android.content.res.ColorStateList
@@ -6,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -25,24 +27,27 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val prefs = SharedPreferencesHelper(requireContext())
 
         val viewModel: ChatViewModel by activityViewModels()
+
+        val themeToggleGroup = view.findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.themeToggleGroup)
+        val watermarkSttSwitch = view.findViewById<MaterialSwitch>(R.id.watermarkSttSwitch)
         val chatMemoryButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.chatMemoryButton)
         val toolsButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.toolsButton)
-        val copyOrOpenSwitch = view.findViewById<MaterialSwitch>(R.id.copyOropenSwitch)
+        val animateBarOnErrorSwitch = view.findViewById<MaterialSwitch>(R.id.animateBarOnErrorSwitch)
         val showCitationsSwitch = view.findViewById<MaterialSwitch>(R.id.showCitationsSwitch)
-        val expandableInputSwitch = view.findViewById<MaterialSwitch>(R.id.expandableInputSwitch)
         val autoBackSwitch = view.findViewById<MaterialSwitch>(R.id.autoBackSwitch)
-        val copyOrDismissSwitch = view.findViewById<MaterialSwitch>(R.id.copyOrdismissSwitch)
-        val biometricsSwitch = view.findViewById<MaterialSwitch>(R.id.biometricsSwitch)
-        val volumeScrollSwitch = view.findViewById<MaterialSwitch>(R.id.volumeScrollSwitch)
-        val autoDisableWebSearchSwitch = view.findViewById<MaterialSwitch>(R.id.autoDisableWebSearchSwitch)
-        val notificationsSwitch = view.findViewById<MaterialSwitch>(R.id.notificationsSwitch)
         val extendedTopBarSwitch = view.findViewById<MaterialSwitch>(R.id.extendedTopBarSwitch)
+        val copyOrDismissSwitch = view.findViewById<MaterialSwitch>(R.id.copyOrdismissSwitch)
+        val expandableInputSwitch = view.findViewById<MaterialSwitch>(R.id.expandableInputSwitch)
+        val copyOrOpenSwitch = view.findViewById<MaterialSwitch>(R.id.copyOropenSwitch)
+        val autoDisableWebSearchSwitch = view.findViewById<MaterialSwitch>(R.id.autoDisableWebSearchSwitch)
+        val biometricsSwitch = view.findViewById<MaterialSwitch>(R.id.biometricsSwitch)
+        val notificationsSwitch = view.findViewById<MaterialSwitch>(R.id.notificationsSwitch)
         val keepScreenOnSwitch = view.findViewById<MaterialSwitch>(R.id.keepScreenOnSwitch)
         val scrollButtonsSwitch = view.findViewById<MaterialSwitch>(R.id.scrollButtonsSwitch)
-        val animateBarOnErrorSwitch = view.findViewById<MaterialSwitch>(R.id.animateBarOnErrorSwitch)
+        val volumeScrollSwitch = view.findViewById<MaterialSwitch>(R.id.volumeScrollSwitch)
+        val timeoutButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.timeoutButton)
         val extendedDockSwitch = view.findViewById<MaterialSwitch>(R.id.extendedDockSwitch)
         val presetsExtendedSwitch = view.findViewById<MaterialSwitch>(R.id.presetsExtendedSwitch)
-        val timeoutButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.timeoutButton)
         val scrollProgressSwitch = view.findViewById<MaterialSwitch>(R.id.scrollProgressSwitch)
         val apiKeyButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.apiKeyButton)
         val braveApiKeyButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.braveApiKeyButton)
@@ -55,26 +60,36 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val voiceModelEdit = view.findViewById<com.google.android.material.textfield.TextInputEditText>(R.id.voiceInputModelEdit)
         val voiceProviderToggle = view.findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.voiceInputProviderToggle)
         biometricsSwitch.isChecked = prefs.getBiometricEnabled()
-        volumeScrollSwitch.isChecked = viewModel.isVolumeScrollEnabled.value ?: false
         notificationsSwitch.isChecked = prefs.getNotiPreference()
-        autoDisableWebSearchSwitch.isChecked = prefs.getDisableWebSearchAfterSend()
-        keepScreenOnSwitch.isChecked = prefs.getKeepScreenOnPreference()
-        copyOrOpenSwitch.isChecked = prefs.getUseCopyButton()
-        scrollButtonsSwitch.isChecked = viewModel.isScrollersEnabled.value ?: false
         autoBackSwitch.isChecked = prefs.getAutoBack()
         val memoryCount = prefs.getChatMemoryCount()
         chatMemoryButton.text = if (memoryCount == Int.MAX_VALUE) "All messages" else "$memoryCount messages"
-        animateBarOnErrorSwitch.isChecked = prefs.getAnimateBarOnError()
+        val savedMode = prefs.getThemeMode()
+        when (savedMode) {
+            SharedPreferencesHelper.THEME_LIGHT -> themeToggleGroup.check(R.id.btnThemeLight)
+            SharedPreferencesHelper.THEME_DARK -> themeToggleGroup.check(R.id.btnThemeDark)
+            else -> themeToggleGroup.check(R.id.btnThemeSystem)
+        }
+        watermarkSttSwitch.isChecked = prefs.getWatermarkSttEnabled()
+        keepScreenOnSwitch.isChecked = prefs.getKeepScreenOnPreference()
         copyOrDismissSwitch.isChecked = prefs.getUseCopyButton2()
+        animateBarOnErrorSwitch.isChecked = prefs.getAnimateBarOnError()
+        scrollButtonsSwitch.isChecked = viewModel.isScrollersEnabled.value ?: false
+        volumeScrollSwitch.isChecked = viewModel.isVolumeScrollEnabled.value ?: false
         expandableInputSwitch.isChecked = viewModel.isExpandableInputEnabled.value ?: false
         extendedDockSwitch.isChecked = viewModel.isExtendedDockEnabled.value ?: false
         presetsExtendedSwitch.isChecked = viewModel.isPresetsExtendedEnabled.value ?: false
         scrollProgressSwitch.isChecked = viewModel.isScrollProgressEnabled.value ?: true
         extendedTopBarSwitch.isChecked = prefs.getExtendedTopBarEnabled()
+        copyOrOpenSwitch.isChecked = prefs.getUseCopyButton()
+        autoDisableWebSearchSwitch.isChecked = prefs.getDisableWebSearchAfterSend()
         openRouterTransformsSwitch.isChecked = prefs.getOpenRouterTransformsEnabled()
         showCitationsSwitch.isChecked = prefs.getShowCitations()
-        openRouterTransformsSwitch.setOnCheckedChangeListener { _, isChecked ->
-            prefs.saveOpenRouterTransformsEnabled(isChecked)
+        voiceModelEdit.setText(prefs.getVoiceInputModel())
+        when (prefs.getVoiceInputProvider()) {
+            "cloud" -> voiceProviderToggle.check(R.id.providerCloudButton)
+            "off" -> voiceProviderToggle.check(R.id.providerOffButton)
+            else -> voiceProviderToggle.check(R.id.providerLanButton)
         }
         apiKeyButton.setOnClickListener {
             val dialog = SaveApiDialogFragment()
@@ -95,24 +110,25 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
             val dialog = ChatMemoryDialogFragment()
             dialog.show(childFragmentManager, "ChatMemoryDialogFragment")
         }
-        promptsButton.setOnClickListener {
-            parentFragmentManager.beginTransaction()
-                .hide(this)
-                .add(R.id.fragment_container, PromptLibraryFragment())
-                .addToBackStack(null)
-                .commit()
+
+        autoBackSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefs.saveAutoBack(isChecked)
         }
         extendedDockSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.toggleExtendedDock()  // VM saves + notifies Chat
         }
-        presetsExtendedSwitch.setOnCheckedChangeListener { _, isChecked ->
-            viewModel.togglePresetsExtended()  // VM saves + notifies Chat
-        }
-        autoBackSwitch.setOnCheckedChangeListener { _, isChecked ->
-            prefs.saveAutoBack(isChecked)
+        watermarkSttSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefs.saveWatermarkSttEnabled(isChecked)
         }
         copyOrDismissSwitch.setOnCheckedChangeListener { _, isChecked ->
             prefs.saveUseCopyButton2(isChecked)  // true = Copy button, false = Dismiss button
+        }
+        animateBarOnErrorSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefs.saveAnimateBarOnError(isChecked)
+        }
+
+        presetsExtendedSwitch.setOnCheckedChangeListener { _, isChecked ->
+            viewModel.togglePresetsExtended()  // VM saves + notifies Chat
         }
         viewModel.isPresetsExtendedEnabled.observe(viewLifecycleOwner) { enabled ->
             presetsExtendedSwitch.isChecked = enabled
@@ -120,8 +136,42 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         viewModel.isVolumeScrollEnabled.observe(viewLifecycleOwner) { enabled ->
             volumeScrollSwitch.isChecked = enabled
         }
+        openRouterTransformsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefs.saveOpenRouterTransformsEnabled(isChecked)
+        }
+        themeToggleGroup.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) { // Only trigger when a button is selected
+                val mode = when (checkedId) {
+                    R.id.btnThemeLight -> SharedPreferencesHelper.THEME_LIGHT
+                    R.id.btnThemeDark -> SharedPreferencesHelper.THEME_DARK
+                    else -> SharedPreferencesHelper.THEME_SYSTEM
+                }
+
+                // Save the choice
+                prefs.saveThemeMode(mode)
+
+                // Determine the AppCompatDelegate mode
+                val appMode = when (mode) {
+                    SharedPreferencesHelper.THEME_LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
+                    SharedPreferencesHelper.THEME_DARK -> AppCompatDelegate.MODE_NIGHT_YES
+                    else -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
+                }
+
+                // Apply and Recreate
+                if (AppCompatDelegate.getDefaultNightMode() != appMode) {
+                    AppCompatDelegate.setDefaultNightMode(appMode)
+                    requireActivity().recreate()
+                }
+            }
+        }
+        showCitationsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefs.saveShowCitations(isChecked)
+        }
         copyOrOpenSwitch.setOnCheckedChangeListener { _, isChecked ->
             prefs.saveUseCopyButton(isChecked)  // true = Copy button, false = Open button
+        }
+        notificationsSwitch.setOnCheckedChangeListener { _, isChecked ->
+            prefs.saveNotiPreference(isChecked)
         }
         autoDisableWebSearchSwitch.setOnCheckedChangeListener { _, isChecked ->
             prefs.saveDisableWebSearchAfterSend(isChecked)
@@ -132,12 +182,8 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         extendedTopBarSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.toggleExtendedTopBar()  // VM saves + notifies Chat
         }
-        animateBarOnErrorSwitch.setOnCheckedChangeListener { _, isChecked ->
-            prefs.saveAnimateBarOnError(isChecked)
-        }
-        notificationsSwitch.setOnCheckedChangeListener { _, isChecked ->
-            prefs.saveNotiPreference(isChecked)
-        }
+
+
         scrollProgressSwitch.setOnCheckedChangeListener { _, isChecked -> viewModel.toggleScrollProgress() }
         viewModel.isScrollProgressEnabled.observe(viewLifecycleOwner) { enabled -> scrollProgressSwitch.isChecked = enabled }
         creditsButton.setOnClickListener {
@@ -147,18 +193,6 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 parentFragmentManager.popBackStack()
                 viewModel.checkRemainingCredits()
             }
-        }
-        showCitationsSwitch.setOnCheckedChangeListener { _, isChecked ->
-            prefs.saveShowCitations(isChecked)
-        }
-        voiceModelEdit.setText(prefs.getVoiceInputModel())
-        when (prefs.getVoiceInputProvider()) {
-            "cloud" -> voiceProviderToggle.check(R.id.providerCloudButton)
-            "off" -> voiceProviderToggle.check(R.id.providerOffButton)
-            else -> voiceProviderToggle.check(R.id.providerLanButton)
-        }
-        timeoutButton.setOnClickListener {
-            TimeoutDialogFragment().show(childFragmentManager, TimeoutDialogFragment.TAG)
         }
         scrollButtonsSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.toggleScrollers()  // 🔥 VM saves prefs + notifies Chat instantly
@@ -183,12 +217,22 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 .addToBackStack(null)
                 .commit()
         }
+        promptsButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .hide(this)
+                .add(R.id.fragment_container, PromptLibraryFragment())
+                .addToBackStack(null)
+                .commit()
+        }
         maxTokensButton.setOnClickListener {
             val dialog = MaxTokensDialogFragment()
             dialog.show(childFragmentManager, "MaxTokensDialogFragment")
         }
         lanButton.setOnClickListener {
             SaveLANDialogFragment().show(childFragmentManager, SaveLANDialogFragment.TAG)
+        }
+        timeoutButton.setOnClickListener {
+            TimeoutDialogFragment().show(childFragmentManager, TimeoutDialogFragment.TAG)
         }
         biometricsSwitch.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
@@ -206,7 +250,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 prefs.saveBiometricEnabled(false)
             }
         }
-// Save on text change
+
         voiceModelEdit.doAfterTextChanged { text ->
             prefs.setVoiceInputModel(text?.toString() ?: "")
         }
@@ -222,23 +266,23 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
                 prefs.setVoiceInputProvider(provider)
             }
         }
-
         // 🔥 STYLE ALL SWITCHES (your exact code → reusable)
         listOf(
-            R.id.scrollButtonsSwitch,
-            R.id.expandableInputSwitch,
+            R.id.watermarkSttSwitch,
+                    R.id.scrollButtonsSwitch,
             R.id.volumeScrollSwitch,
+            R.id.expandableInputSwitch,
             R.id.scrollProgressSwitch,
             R.id.keepScreenOnSwitch,
             R.id.biometricsSwitch,
+            R.id.copyOropenSwitch,
             R.id.extendedDockSwitch,
             R.id.notificationsSwitch,
             R.id.presetsExtendedSwitch,
-            R.id.copyOropenSwitch,
+            R.id.copyOrdismissSwitch,
             R.id.autoDisableWebSearchSwitch,
             R.id.extendedTopBarSwitch,
             R.id.autoBackSwitch,
-            R.id.copyOrdismissSwitch,
             R.id.openRouterTransformsSwitch,
             R.id.showCitationsSwitch,
             R.id.animateBarOnErrorSwitch

@@ -60,6 +60,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.TimeoutCancellationException
 import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -116,6 +117,7 @@ import javax.net.ssl.SSLContext
 import javax.net.ssl.X509TrustManager
 import kotlin.coroutines.cancellation.CancellationException
 import kotlin.coroutines.resume
+import kotlin.time.Duration.Companion.milliseconds
 
 @Serializable
 data class OpenRouterResponse(val data: List<ModelData>)
@@ -1275,6 +1277,36 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             Tool(
                 type = "function",
                 function = FunctionTool(
+                    name = "wait",
+                    description = "Pauses execution for a specified number of seconds. Use this when the user asks you to wait, delay, or perform an action repeatedly over time (e.g., 'check every minute', 'wait 30 seconds', 'do this for each of the next 4 minutes'). Minimum: 10 seconds, Maximum: 600 seconds (10 minutes).",
+                    parameters = buildJsonObject {
+                        put("type", "object")
+                        putJsonObject("properties") {
+                            putJsonObject("seconds") {
+                                put("type", "integer")
+                                put(
+                                    "description",
+                                    "Number of seconds to wait. Must be between 10 and 600 (10 minutes)."
+                                )
+                                put("minimum", 10)
+                                put("maximum", 600)
+                            }
+                            putJsonObject("reason") {
+                                put("type", "string")
+                                put(
+                                    "description",
+                                    "Optional: Brief description of why the wait is needed (e.g., 'Waiting before next check', 'Delay before repeating search')."
+                                )
+                            }
+                        }
+                        putJsonArray("required") { add(JsonPrimitive("seconds")) }
+                    }
+                )
+            ),
+
+            Tool(
+                type = "function",
+                function = FunctionTool(
                     name = "create_folder",
                     description = "Creates a new subfolder in the Download/oxproxion workspace. Use this when the user explicitly asks to create a folder or organize files into a new directory.",
                     parameters = buildJsonObject {
@@ -2253,6 +2285,27 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                         }
                     } catch (e: Exception) {
                         "Error deleting files: ${e.message}"
+                    }
+                }
+                "wait" -> {
+                    try {
+                        val arguments = json.decodeFromString<JsonObject>(toolCall.function.arguments)
+                        val seconds = arguments["seconds"]?.jsonPrimitive?.intOrNull
+                        val reason = arguments["reason"]?.jsonPrimitive?.contentOrNull
+
+                        if (seconds != null && seconds in 10..600) {
+                            val displayReason = if (!reason.isNullOrBlank()) " ($reason)" else ""
+                            _toastUiEvent.postValue(Event("Waiting for $seconds seconds$displayReason..."))
+
+                            // Use delay to pause execution
+                            delay((seconds * 1000L).milliseconds)
+
+                            "Waited for $seconds seconds successfully$displayReason. The wait has completed."
+                        } else {
+                            "Error: Invalid seconds value. Must be between 10 and 600."
+                        }
+                    } catch (e: Exception) {
+                        "Error executing wait: ${e.message}"
                     }
                 }
                 "find_nearby_places" -> {

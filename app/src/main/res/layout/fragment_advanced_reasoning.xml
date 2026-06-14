@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#000000"
+    android:background="?attr/colorSurface"
     android:fitsSystemWindows="true"
     tools:context=".AdvancedReasoningFragment">
 
@@ -14,8 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         app:title="Advanced Reasoning"
-        app:titleTextColor="@android:color/white"
-        android:background="#1C1C1E"
+        app:titleTextColor="?android:attr/textColorPrimary"
+        android:background="?attr/colorSurface"
         app:navigationIcon="@drawable/is_backarrow" />
 
     <ScrollView
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Note: You can set Effort OR Max Reasoning Tokens, not both. Setting Max Reasoning Tokens disables Effort. To use Effort, make sure Max Reasoning Tokens has no value."
-                android:textColor="@android:color/white"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="14sp"
                 android:layout_marginBottom="16dp"
                 android:gravity="center" />
@@ -45,7 +45,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Effort Level:"
-                android:textColor="@color/your_orange_color"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="18sp"
                 android:layout_marginBottom="16dp" />
 
@@ -69,9 +69,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Minimal"
-                        style="?attr/materialButtonOutlinedStyle"
-                        app:backgroundTint="@color/toggle_background_selector"
-                        app:strokeColor="@color/chestnut" />
+                        style="?attr/materialButtonOutlinedStyle" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonLow"
@@ -79,9 +77,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Low"
-                        style="?attr/materialButtonOutlinedStyle"
-                        app:backgroundTint="@color/toggle_background_selector"
-                        app:strokeColor="@color/chestnut" />
+                        style="?attr/materialButtonOutlinedStyle" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonMedium"
@@ -89,9 +85,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="Medium"
-                        style="?attr/materialButtonOutlinedStyle"
-                        app:backgroundTint="@color/toggle_background_selector"
-                        app:strokeColor="@color/chestnut" />
+                        style="?attr/materialButtonOutlinedStyle" />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/buttonHigh"
@@ -99,9 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="High"
-                        style="?attr/materialButtonOutlinedStyle"
-                        app:backgroundTint="@color/toggle_background_selector"
-                        app:strokeColor="@color/chestnut" />
+                        style="?attr/materialButtonOutlinedStyle" />
 
                 </com.google.android.material.button.MaterialButtonToggleGroup>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -120,9 +112,9 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="Include in Response:"
-                    android:textColor="@color/your_orange_color"
+                    android:textColor="?attr/colorPrimary"
                     android:textSize="16sp"
-                     />
+                    />
 
                 <com.google.android.material.materialswitch.MaterialSwitch
                     android:id="@+id/includeSwitch"
@@ -137,18 +129,16 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="Max Reasoning Tokens:"
-                android:textColor="@color/your_orange_color"
+                android:textColor="?attr/colorPrimary"
                 android:textSize="16sp"
-
                 android:layout_marginBottom="16dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                app:boxStrokeColor="@android:color/white"
-                app:hintTextColor="@color/your_orange_color"
-                app:boxBackgroundColor="#636363"
+                app:boxStrokeColor="?attr/colorPrimary"
+                app:hintTextColor="?attr/colorPrimary"
                 app:boxCornerRadiusBottomEnd="8dp"
                 app:boxCornerRadiusBottomStart="8dp"
                 app:boxCornerRadiusTopEnd="8dp"
@@ -160,8 +150,8 @@
                     android:layout_height="wrap_content"
                     android:hint="Optional"
                     android:inputType="number"
-                    android:textColor="@android:color/white"
-                     />
+                    android:textColor="?android:attr/textColorPrimary"
+                    />
 
             </com.google.android.material.textfield.TextInputLayout>
 
