@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     android:background="?attr/colorSurface"
-    tools:context=".EditPresetFragment">
+    tools:context=".PresetEditFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -17,7 +17,7 @@
         app:titleTextColor="?android:attr/textColorPrimary"
         android:background="?attr/colorSurface"
         app:navigationIcon="@drawable/is_backarrow"
-        app:menu="@menu/add_edit_prompt_menu" />
+        app:menu="@menu/add_edit_preset_menu" />
 
     <ScrollView
         android:layout_width="match_parent"

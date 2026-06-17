@@ -134,6 +134,15 @@ class PresetEditFragment : Fragment() {
         toolbar.setNavigationOnClickListener {
             parentFragmentManager.popBackStack()
         }
+        toolbar.setOnMenuItemClickListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.action_save_prompt -> {
+                    save() // This calls your existing save() function
+                    true // Return true to indicate the click was handled
+                }
+                else -> false // Return false for any other menu items
+            }
+        }
     }
 
     private fun setupModelAutoComplete() {

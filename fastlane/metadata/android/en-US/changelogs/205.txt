@@ -1,0 +1,3 @@
+- Fix for regression not allowing landscape orientation.
+- Fix for bug where save button in toolbar not working in edit Presets screen.
+- Optimization of notification icon in status bar for Android 17.
