@@ -102,6 +102,17 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".Transactivity"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=":transcription_task"
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            android:exported="true"
+            android:theme="@style/Theme.Oxproxion.AIFix">
+
+        </activity>
+        <activity
             android:name=".SpellCheckActivity"
             android:label="Fix with oxproxion"
             android:theme="@style/Theme.Oxproxion.AIFix"

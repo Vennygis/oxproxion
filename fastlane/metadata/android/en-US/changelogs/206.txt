@@ -1,0 +1,1 @@
+- If you have a transcription model set, make a preset entitled "Transcription"(case insensitive) and have oxproxion set as your system's digital assistant(And do not have a preset entitled "Digital Assistant"), when you call the app using it as the assistant it will act as speech to text transcriber. It will automatically put the transcribed text on your clipboard and quit.

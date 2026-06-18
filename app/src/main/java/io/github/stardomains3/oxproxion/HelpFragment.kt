@@ -383,6 +383,7 @@ class HelpFragment : Fragment(R.layout.fragment_help) {
              *   Non-streaming only. No tools are available for use.
              *   You can use one of these models as an alternate STT by long-pressing the microphone icon in the chat box. Set your STT model in Settings.
              *   If your have watermark transcription setting on, press and hold the watermark in the main chat screen while you talk. When you lift your finger, your speech is transcribed, copied to the clipboard and entered into the prompt box.
+             *   If you have a transcription model set, make a preset entitled "Transcription"(case insensitive) and have oxproxion set as your system's digital assistant(And do not have a preset entitled "Digital Assistant"), when you call the app using it as the assistant it will act as speech to text transcriber. It will automatically put the transcribed text on your clipboard and quit.
             ---
             
             ## Advanced Reasoning Settings
