@@ -25,6 +25,7 @@ import android.media.ToneGenerator
 import android.media.AudioManager
 import android.view.KeyEvent // Added for key interception
 import android.view.View
+import androidx.core.view.isVisible
 import kotlin.time.Duration.Companion.milliseconds
 
 
@@ -75,7 +76,7 @@ class Transactivity : AppCompatActivity() {
         // We use post to ensure the view is fully drawn before we try to use the Mic
         window.decorView.postDelayed({
             startVoiceRecording()
-        }, 500) // 500ms delay to ensure smooth transition
+        }, 300) // 500ms delay to ensure smooth transition
     }
 
     // Intercept volume keys to stop recording
@@ -118,10 +119,12 @@ class Transactivity : AppCompatActivity() {
             btnAction.text = "Stop / Transcribe"
 
 
+
         } catch (e: Exception) {
-            Log.e("Transactivity", "Failed to start recording", e)
+            //Log.e("Transactivity", "Failed to start recording", e)
             tvStatus.text = "Error starting mic"
             btnAction.text = "Retry"
+            btnAction.isVisible = true
         }
     }
 
@@ -133,7 +136,7 @@ class Transactivity : AppCompatActivity() {
                 mediaRecorder?.stop()
             } catch (e: RuntimeException) {
                 // stop() can fail if no audio was actually recorded
-                Log.e("Transactivity", "Stop failed: no audio recorded")
+                //Log.e("Transactivity", "Stop failed: no audio recorded")
             }
 
             mediaRecorder?.release()
@@ -151,7 +154,7 @@ class Transactivity : AppCompatActivity() {
                 }
             }
         } catch (e: Exception) {
-            Log.e("Transactivity", "Failed to stop recording", e)
+            //Log.e("Transactivity", "Failed to stop recording", e)
             isRecording = false
             btnAction.text = "Start Recording"
             btnAction.visibility = View.VISIBLE
@@ -190,12 +193,14 @@ class Transactivity : AppCompatActivity() {
                 } else {
                     tvStatus.text = "Could not understand audio."
                     btnAction.text = "Try Again"
+                    btnAction.isVisible = true
                     btnAction.isEnabled = true // Re-enable so they can try again
                 }
             } catch (e: Exception) {
-                Log.e("Transactivity", "Transcription error", e)
+                //Log.e("Transactivity", "Transcription error", e)
                 tvStatus.text = "Error: ${e.message}"
                 btnAction.text = "Try Again"
+                btnAction.isVisible = true
                 btnAction.isEnabled = true // Re-enable so they can try again
             } finally {
                 file.delete()
