@@ -180,37 +180,39 @@ class SharedPreferencesHelper(context: Context) {
             emptyList()
         }
     }
-    // Temperature
+    // --- Inference Parameter Methods ---
+
+    // Temperature (Default: 1.0)
     fun getInferenceTempEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_TEMP_ENABLED, false)
     fun saveInferenceTempEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_TEMP_ENABLED, enabled) }
-    fun getInferenceTempValue(): String = mainPrefs.getString(KEY_INFERENCE_TEMP_VALUE, "0.7") ?: "0.7"
+    fun getInferenceTempValue(): String = mainPrefs.getString(KEY_INFERENCE_TEMP_VALUE, "1.0") ?: "1.0"
     fun saveInferenceTempValue(value: String) = mainPrefs.edit { putString(KEY_INFERENCE_TEMP_VALUE, value) }
 
-    // Top P
+    // Top P (Default: 1.0)
     fun getInferenceTopPEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_TOP_P_ENABLED, false)
     fun saveInferenceTopPEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_TOP_P_ENABLED, enabled) }
-    fun getInferenceTopPValue(): String = mainPrefs.getString(KEY_INFERENCE_TOP_P_VALUE, "0.9") ?: "0.9"
+    fun getInferenceTopPValue(): String = mainPrefs.getString(KEY_INFERENCE_TOP_P_VALUE, "1.0") ?: "1.0"
     fun saveInferenceTopPValue(value: String) = mainPrefs.edit { putString(KEY_INFERENCE_TOP_P_VALUE, value) }
 
-    // Top K
+    // Top K (Default: 40) - This one was already correct
     fun getInferenceTopKEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_TOP_K_ENABLED, false)
     fun saveInferenceTopKEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_TOP_K_ENABLED, enabled) }
     fun getInferenceTopKValue(): Int = mainPrefs.getInt(KEY_INFERENCE_TOP_K_VALUE, 40)
     fun saveInferenceTopKValue(value: Int) = mainPrefs.edit { putInt(KEY_INFERENCE_TOP_K_VALUE, value) }
 
-    // Min P
+    // Min P (Default: 0.0)
     fun getInferenceMinPEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_MIN_P_ENABLED, false)
     fun saveInferenceMinPEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_MIN_P_ENABLED, enabled) }
     fun getInferenceMinPValue(): String = mainPrefs.getString(KEY_INFERENCE_MIN_P_VALUE, "0.0") ?: "0.0"
     fun saveInferenceMinPValue(value: String) = mainPrefs.edit { putString(KEY_INFERENCE_MIN_P_VALUE, value) }
 
-    // Repetition Penalty
+    // Repetition Penalty (Default: 1.0)
     fun getInferenceRepetitionPenaltyEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_REPETITION_PENALTY_ENABLED, false)
     fun saveInferenceRepetitionPenaltyEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_REPETITION_PENALTY_ENABLED, enabled) }
-    fun getInferenceRepetitionPenaltyValue(): String = mainPrefs.getString(KEY_INFERENCE_REPETITION_PENALTY_VALUE, "1.1") ?: "1.1"
+    fun getInferenceRepetitionPenaltyValue(): String = mainPrefs.getString(KEY_INFERENCE_REPETITION_PENALTY_VALUE, "1.0") ?: "1.0"
     fun saveInferenceRepetitionPenaltyValue(value: String) = mainPrefs.edit { putString(KEY_INFERENCE_REPETITION_PENALTY_VALUE, value) }
 
-    // Presence Penalty
+    // Presence Penalty (Default: 0.0)
     fun getInferencePresencePenaltyEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_PRESENCE_PENALTY_ENABLED, false)
     fun saveInferencePresencePenaltyEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_PRESENCE_PENALTY_ENABLED, enabled) }
     fun getInferencePresencePenaltyValue(): String = mainPrefs.getString(KEY_INFERENCE_PRESENCE_PENALTY_VALUE, "0.0") ?: "0.0"

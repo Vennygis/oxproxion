@@ -1,0 +1,1 @@
+Updated the default values for the new Inference Parameters settings introduced in the last release. Note: If a parameter is disabled, it will not be sent with the chat request; instead, the server/model will use its own default settings, as it has in previous releases.
