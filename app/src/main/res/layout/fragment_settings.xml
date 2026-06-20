@@ -115,6 +115,22 @@
                 app:strokeColor="@color/chestnut"
                 app:strokeWidth="1dp"
                 app:backgroundTint="?attr/colorSurface" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/inferenceParamsButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Inference Parameters"
+                app:icon="@drawable/ic_param"
+                app:iconSize="28dp"
+                app:iconTint="#A8A8A8"
+                app:iconTintMode="src_in"
+                app:iconGravity="start"
+                app:iconPadding="12dp"
+                android:textColor="?android:attr/textColorPrimary"
+                app:strokeColor="@color/chestnut"
+                app:strokeWidth="1dp"
+                app:backgroundTint="?attr/colorSurface" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/apiKeyButton"

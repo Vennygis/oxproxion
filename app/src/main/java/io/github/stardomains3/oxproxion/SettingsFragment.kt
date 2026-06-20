@@ -29,6 +29,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         val viewModel: ChatViewModel by activityViewModels()
 
         val themeToggleGroup = view.findViewById<com.google.android.material.button.MaterialButtonToggleGroup>(R.id.themeToggleGroup)
+        val inferenceParamsButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.inferenceParamsButton)
         val watermarkSttSwitch = view.findViewById<MaterialSwitch>(R.id.watermarkSttSwitch)
         val chatMemoryButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.chatMemoryButton)
         val toolsButton = view.findViewById<com.google.android.material.button.MaterialButton>(R.id.toolsButton)
@@ -178,6 +179,13 @@ class SettingsFragment : Fragment(R.layout.fragment_settings) {
         }
         expandableInputSwitch.setOnCheckedChangeListener { _, _ ->
             viewModel.toggleExpandableInput()
+        }
+        inferenceParamsButton.setOnClickListener {
+            parentFragmentManager.beginTransaction()
+                .hide(this)
+                .add(R.id.fragment_container, InferenceParametersFragment())
+                .addToBackStack(null)
+                .commit()
         }
         extendedTopBarSwitch.setOnCheckedChangeListener { _, isChecked ->
             viewModel.toggleExtendedTopBar()  // VM saves + notifies Chat

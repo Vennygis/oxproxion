@@ -1,0 +1,3 @@
+- Added user agent to network calls: ".header("User-Agent", "oxproxion/${BuildConfig.VERSION_NAME}")"
+- Updated commonmark dependency.
+- In the Settings screen, added optional Inference Parameters/Sampling Parameters for the chat.

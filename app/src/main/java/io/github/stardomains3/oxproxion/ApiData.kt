@@ -24,6 +24,11 @@ data class ChatRequest(
     @SerialName("search_parameters")
     val searchParameters: SearchParameters? = null,
     val temperature: Double? = null,
+    @SerialName("top_p") val topP: Double? = null,
+    @SerialName("top_k") val topK: Int? = null,
+    @SerialName("min_p") val minP: Double? = null,
+    @SerialName("repetition_penalty") val repetitionPenalty: Double? = null,
+    @SerialName("presence_penalty") val presencePenalty: Double? = null,
     val modalities: List<String>? = null,
     @SerialName("chat_template_kwargs")
     val chatTemplateKwargs: Map<String, JsonElement>? = null,

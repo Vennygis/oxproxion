@@ -1,6 +1,7 @@
 package io.github.stardomains3.oxproxion
 
 import android.Manifest
+import io.github.stardomains3.oxproxion.BuildConfig
 import android.app.Application
 import android.content.ContentResolver
 import android.content.ContentValues
@@ -37,6 +38,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.call.body
 import io.ktor.client.engine.okhttp.OkHttp
 import io.ktor.client.plugins.ClientRequestException
+import io.ktor.client.plugins.DefaultRequest
 import io.ktor.client.plugins.ServerResponseException
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.plugins.timeout
@@ -211,8 +213,12 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         val timeoutMs = sharedPreferencesHelper.getTimeoutMinutes().toLong() * 60_000L
         return HttpClient(OkHttp) {
             install(ContentNegotiation) { json(Json { ignoreUnknownKeys = true }) }
+            install(DefaultRequest) {
+                header("User-Agent", "oxproxion/${BuildConfig.VERSION_NAME}")
+            }
             engine {
                 config {
+
                     addInterceptor(CompressionInterceptor(Gzip))
                     addInterceptor(BrotliInterceptor)
                     readTimeout(timeoutMs, TimeUnit.MILLISECONDS)
@@ -230,9 +236,13 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
             install(ContentNegotiation) {
                 json(Json { ignoreUnknownKeys = true })
             }
+            install(DefaultRequest) {
+                header("User-Agent", "oxproxion/${BuildConfig.VERSION_NAME}")
+            }
 
             engine {
                 config {
+
                     // --- START SSL BYPASS (Strictly for LAN) ---
                     val trustAllCerts = object : X509TrustManager {
                         override fun checkClientTrusted(chain: Array<out X509Certificate>?, authType: String?) {}
@@ -3124,8 +3134,16 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 chatTemplateKwargs = llamaCppKwargs,
                 tools = if (_isToolsEnabled.value == true) buildTools() else null,
                 toolChoice = if (_isToolsEnabled.value == true) "auto" else null,
+                // === INFERENCE PARAMETERS ===
+                temperature = if (sharedPreferencesHelper.getInferenceTempEnabled()) sharedPreferencesHelper.getInferenceTempValue().toDoubleOrNull() else null,
+                topP = if (sharedPreferencesHelper.getInferenceTopPEnabled()) sharedPreferencesHelper.getInferenceTopPValue().toDoubleOrNull() else null,
+                topK = if (sharedPreferencesHelper.getInferenceTopKEnabled()) sharedPreferencesHelper.getInferenceTopKValue() else null,
+                minP = if (sharedPreferencesHelper.getInferenceMinPEnabled()) sharedPreferencesHelper.getInferenceMinPValue().toDoubleOrNull() else null,
+                repetitionPenalty = if (sharedPreferencesHelper.getInferenceRepetitionPenaltyEnabled()) sharedPreferencesHelper.getInferenceRepetitionPenaltyValue().toDoubleOrNull() else null,
+                presencePenalty = if (sharedPreferencesHelper.getInferencePresencePenaltyEnabled()) sharedPreferencesHelper.getInferencePresencePenaltyValue().toDoubleOrNull() else null
 
-                )
+
+            )
 
             try {
                 lanHttpClient.preparePost(activeChatUrl) {
@@ -3410,6 +3428,14 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                 plugins = buildWebSearchPlugin(),
                 webSearchOptions = webSearchOpts,
                 toolChoice = if (_isToolsEnabled.value == true) "auto" else null,
+                // === INFERENCE PARAMETERS ===
+                temperature = if (sharedPreferencesHelper.getInferenceTempEnabled()) sharedPreferencesHelper.getInferenceTempValue().toDoubleOrNull() else null,
+                topP = if (sharedPreferencesHelper.getInferenceTopPEnabled()) sharedPreferencesHelper.getInferenceTopPValue().toDoubleOrNull() else null,
+                topK = if (sharedPreferencesHelper.getInferenceTopKEnabled()) sharedPreferencesHelper.getInferenceTopKValue() else null,
+                minP = if (sharedPreferencesHelper.getInferenceMinPEnabled()) sharedPreferencesHelper.getInferenceMinPValue().toDoubleOrNull() else null,
+                repetitionPenalty = if (sharedPreferencesHelper.getInferenceRepetitionPenaltyEnabled()) sharedPreferencesHelper.getInferenceRepetitionPenaltyValue().toDoubleOrNull() else null,
+                presencePenalty = if (sharedPreferencesHelper.getInferencePresencePenaltyEnabled()) sharedPreferencesHelper.getInferencePresencePenaltyValue().toDoubleOrNull() else null,
+
                 // === AUDIO modality ===
                 modalities = if (isLyria) {
                     listOf("text", "audio")
@@ -3746,7 +3772,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         messagesForApiRequest: List<FlexibleMessage>,
         thinkingMessage: FlexibleMessage?
     ) {
-        withTimeout(sharedPreferencesHelper.getTimeoutMinutes().toLong() * 60_000L) {
+        withTimeout((sharedPreferencesHelper.getTimeoutMinutes().toLong() * 60_000L).milliseconds) {
             withContext(Dispatchers.IO) {
                 val sharedPreferencesHelper =
                     SharedPreferencesHelper(getApplication<Application>().applicationContext)
@@ -3781,7 +3807,15 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     chatTemplateKwargs = llamaCppKwargs,
                     max_tokens = maxTokens,
                     tools = if (_isToolsEnabled.value == true) buildTools() else null,
-                    toolChoice = if (_isToolsEnabled.value == true) "auto" else null
+                    toolChoice = if (_isToolsEnabled.value == true) "auto" else null,
+                            // === INFERENCE PARAMETERS ===
+                            temperature = if (sharedPreferencesHelper.getInferenceTempEnabled()) sharedPreferencesHelper.getInferenceTempValue().toDoubleOrNull() else null,
+                    topP = if (sharedPreferencesHelper.getInferenceTopPEnabled()) sharedPreferencesHelper.getInferenceTopPValue().toDoubleOrNull() else null,
+                    topK = if (sharedPreferencesHelper.getInferenceTopKEnabled()) sharedPreferencesHelper.getInferenceTopKValue() else null,
+                    minP = if (sharedPreferencesHelper.getInferenceMinPEnabled()) sharedPreferencesHelper.getInferenceMinPValue().toDoubleOrNull() else null,
+                    repetitionPenalty = if (sharedPreferencesHelper.getInferenceRepetitionPenaltyEnabled()) sharedPreferencesHelper.getInferenceRepetitionPenaltyValue().toDoubleOrNull() else null,
+                    presencePenalty = if (sharedPreferencesHelper.getInferencePresencePenaltyEnabled()) sharedPreferencesHelper.getInferencePresencePenaltyValue().toDoubleOrNull() else null
+
                 )
 
                 val response = lanHttpClient.post(activeChatUrl) {
@@ -3905,7 +3939,7 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
     private suspend fun handleNonStreamedResponse(modelForRequest: String, messagesForApiRequest: List<FlexibleMessage>, thinkingMessage: FlexibleMessage?) {
-        withTimeout(sharedPreferencesHelper.getTimeoutMinutes().toLong() * 60_000L) {
+        withTimeout((sharedPreferencesHelper.getTimeoutMinutes().toLong() * 60_000L).milliseconds) {
             withContext(Dispatchers.IO) {
                 val sharedPreferencesHelper =
                     SharedPreferencesHelper(getApplication<Application>().applicationContext)
@@ -3959,6 +3993,14 @@ class ChatViewModel(application: Application) : AndroidViewModel(application) {
                     toolChoice = if (_isToolsEnabled.value == true) "auto" else null,
                     plugins = buildWebSearchPlugin(),
                     webSearchOptions = webSearchOpts,
+                    // === INFERENCE PARAMETERS ===
+                    temperature = if (sharedPreferencesHelper.getInferenceTempEnabled()) sharedPreferencesHelper.getInferenceTempValue().toDoubleOrNull() else null,
+                    topP = if (sharedPreferencesHelper.getInferenceTopPEnabled()) sharedPreferencesHelper.getInferenceTopPValue().toDoubleOrNull() else null,
+                    topK = if (sharedPreferencesHelper.getInferenceTopKEnabled()) sharedPreferencesHelper.getInferenceTopKValue() else null,
+                    minP = if (sharedPreferencesHelper.getInferenceMinPEnabled()) sharedPreferencesHelper.getInferenceMinPValue().toDoubleOrNull() else null,
+                    repetitionPenalty = if (sharedPreferencesHelper.getInferenceRepetitionPenaltyEnabled()) sharedPreferencesHelper.getInferenceRepetitionPenaltyValue().toDoubleOrNull() else null,
+                    presencePenalty = if (sharedPreferencesHelper.getInferencePresencePenaltyEnabled()) sharedPreferencesHelper.getInferencePresencePenaltyValue().toDoubleOrNull() else null,
+
                     modalities = if (isImageGenerationModel(modelForRequest)) {
                         if (modelForRequest.contains("bytedance-seed", ignoreCase = true) ||
                             modelForRequest.contains("black-forest-labs", ignoreCase = true) ||

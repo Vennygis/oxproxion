@@ -40,6 +40,18 @@ class SharedPreferencesHelper(context: Context) {
         const val THEME_SYSTEM = 0
         const val THEME_LIGHT = 1
         const val THEME_DARK = 2
+        private const val KEY_INFERENCE_TEMP_ENABLED = "inference_temp_enabled"
+        private const val KEY_INFERENCE_TEMP_VALUE = "inference_temp_value"
+        private const val KEY_INFERENCE_TOP_P_ENABLED = "inference_top_p_enabled"
+        private const val KEY_INFERENCE_TOP_P_VALUE = "inference_top_p_value"
+        private const val KEY_INFERENCE_TOP_K_ENABLED = "inference_top_k_enabled"
+        private const val KEY_INFERENCE_TOP_K_VALUE = "inference_top_k_value"
+        private const val KEY_INFERENCE_MIN_P_ENABLED = "inference_min_p_enabled"
+        private const val KEY_INFERENCE_MIN_P_VALUE = "inference_min_p_value"
+        private const val KEY_INFERENCE_REPETITION_PENALTY_ENABLED = "inference_repetition_penalty_enabled"
+        private const val KEY_INFERENCE_REPETITION_PENALTY_VALUE = "inference_repetition_penalty_value"
+        private const val KEY_INFERENCE_PRESENCE_PENALTY_ENABLED = "inference_presence_penalty_enabled"
+        private const val KEY_INFERENCE_PRESENCE_PENALTY_VALUE = "inference_presence_penalty_value"
         const val LAN_PROVIDER_MLX_LM = "mlx_lm"  // NEW
 
         const val LAN_PROVIDER_HERMES_AGENT = "hermes_agent"  // NEW - Hermes Agent provider
@@ -168,6 +180,42 @@ class SharedPreferencesHelper(context: Context) {
             emptyList()
         }
     }
+    // Temperature
+    fun getInferenceTempEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_TEMP_ENABLED, false)
+    fun saveInferenceTempEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_TEMP_ENABLED, enabled) }
+    fun getInferenceTempValue(): String = mainPrefs.getString(KEY_INFERENCE_TEMP_VALUE, "0.7") ?: "0.7"
+    fun saveInferenceTempValue(value: String) = mainPrefs.edit { putString(KEY_INFERENCE_TEMP_VALUE, value) }
+
+    // Top P
+    fun getInferenceTopPEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_TOP_P_ENABLED, false)
+    fun saveInferenceTopPEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_TOP_P_ENABLED, enabled) }
+    fun getInferenceTopPValue(): String = mainPrefs.getString(KEY_INFERENCE_TOP_P_VALUE, "0.9") ?: "0.9"
+    fun saveInferenceTopPValue(value: String) = mainPrefs.edit { putString(KEY_INFERENCE_TOP_P_VALUE, value) }
+
+    // Top K
+    fun getInferenceTopKEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_TOP_K_ENABLED, false)
+    fun saveInferenceTopKEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_TOP_K_ENABLED, enabled) }
+    fun getInferenceTopKValue(): Int = mainPrefs.getInt(KEY_INFERENCE_TOP_K_VALUE, 40)
+    fun saveInferenceTopKValue(value: Int) = mainPrefs.edit { putInt(KEY_INFERENCE_TOP_K_VALUE, value) }
+
+    // Min P
+    fun getInferenceMinPEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_MIN_P_ENABLED, false)
+    fun saveInferenceMinPEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_MIN_P_ENABLED, enabled) }
+    fun getInferenceMinPValue(): String = mainPrefs.getString(KEY_INFERENCE_MIN_P_VALUE, "0.0") ?: "0.0"
+    fun saveInferenceMinPValue(value: String) = mainPrefs.edit { putString(KEY_INFERENCE_MIN_P_VALUE, value) }
+
+    // Repetition Penalty
+    fun getInferenceRepetitionPenaltyEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_REPETITION_PENALTY_ENABLED, false)
+    fun saveInferenceRepetitionPenaltyEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_REPETITION_PENALTY_ENABLED, enabled) }
+    fun getInferenceRepetitionPenaltyValue(): String = mainPrefs.getString(KEY_INFERENCE_REPETITION_PENALTY_VALUE, "1.1") ?: "1.1"
+    fun saveInferenceRepetitionPenaltyValue(value: String) = mainPrefs.edit { putString(KEY_INFERENCE_REPETITION_PENALTY_VALUE, value) }
+
+    // Presence Penalty
+    fun getInferencePresencePenaltyEnabled(): Boolean = mainPrefs.getBoolean(KEY_INFERENCE_PRESENCE_PENALTY_ENABLED, false)
+    fun saveInferencePresencePenaltyEnabled(enabled: Boolean) = mainPrefs.edit { putBoolean(KEY_INFERENCE_PRESENCE_PENALTY_ENABLED, enabled) }
+    fun getInferencePresencePenaltyValue(): String = mainPrefs.getString(KEY_INFERENCE_PRESENCE_PENALTY_VALUE, "0.0") ?: "0.0"
+    fun saveInferencePresencePenaltyValue(value: String) = mainPrefs.edit { putString(KEY_INFERENCE_PRESENCE_PENALTY_VALUE, value) }
+
     fun saveOpenRouterTransformsEnabled(enabled: Boolean) {
         mainPrefs.edit { putBoolean(KEY_OPENROUTER_TRANSFORMS_ENABLED, enabled) }
     }
