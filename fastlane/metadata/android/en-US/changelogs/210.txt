@@ -1,0 +1,2 @@
+- UI: Cleaned up "Your Model" screen list items and added LAN/Cloud icon.
+- Updated ktorClientAndroid dependency.

@@ -31,6 +31,7 @@ class BotModelAdapter(
     class ModelViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val modelName: TextView = view.findViewById(R.id.textModelName)
         val modelIcon: ImageView = view.findViewById(R.id.iconModelType)
+        val sourceIcon: ImageView = view.findViewById(R.id.iconModelSource)
         val editIcon: ImageView = view.findViewById(R.id.iconEdit)
     }
 
@@ -61,6 +62,13 @@ class BotModelAdapter(
             else -> R.drawable.ic_person
         }
         holder.modelIcon.setImageResource(iconRes)
+        // NEW: Toggle between LAN and OpenRouter (Cloud) source indicator icons
+        val sourceIconRes = if (model.isLANModel) {
+            R.drawable.ic_lan2
+        } else {
+            R.drawable.ic_cloudnew2
+        }
+        holder.sourceIcon.setImageResource(sourceIconRes)
 
         holder.itemView.setOnClickListener {
             onItemClicked(model)
