@@ -228,6 +228,7 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     private var currentCameraUri: Uri? = null
     private lateinit var cameraPermissionLauncher: ActivityResultLauncher<String>
+    private lateinit var localNetworkPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var locationPermissionLauncher: ActivityResultLauncher<String>
     private lateinit var notificationPolicyLauncher: ActivityResultLauncher<Intent>
     private lateinit var imagePicker: ActivityResultLauncher<Intent>  // Renamed for clarity (gallery picker)
@@ -283,6 +284,17 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
                 launchCamera()
             } else {
                 Toast.makeText(requireContext(), "Camera permission needed to take photo", Toast.LENGTH_SHORT).show()
+            }
+        }
+        localNetworkPermissionLauncher = registerForActivityResult(
+            ActivityResultContracts.RequestPermission()
+        ) { isGranted: Boolean ->
+            if (isGranted) {
+                Toast.makeText(requireContext(), "Local Network access granted", Toast.LENGTH_SHORT).show()
+                // Optional: Auto-trigger send or model connection if you interrupted it
+            } else {
+                Toast.makeText(requireContext(), "Local Network permission is required to talk to local LLMs", Toast.LENGTH_LONG).show()
+                // Optional: Revert model selection to a cloud model
             }
         }
         locationPermissionLauncher = registerForActivityResult(
@@ -1966,6 +1978,9 @@ $cleanContent
                     else
                     {
                         viewModel.setModel(modelString)
+                        if (viewModel.activeModelIsLan()) {
+                            checkLocalNetworkPermission()
+                        }
                         /*if (ForegroundService.isRunningForeground && sharedPreferencesHelper.getNotiPreference()) {
                             val apiIdentifier = viewModel.activeChatModel.value ?: "Unknown Model"
                             val displayName = viewModel.getModelDisplayName(apiIdentifier)
@@ -3378,6 +3393,20 @@ $cleanContent
             null   // bottom
         )
         modelNameTextView.contentDescription = description
+    }
+    private fun checkLocalNetworkPermission() {
+        // Android 17 (API 37) requires explicit local network permission
+        if (Build.VERSION.SDK_INT >= 37) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    "android.permission.ACCESS_LOCAL_NETWORK"
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                // Request the permission
+                localNetworkPermissionLauncher.launch("android.permission.ACCESS_LOCAL_NETWORK")
+            }
+        }
+        // If permission is already granted, or Android < 17, do nothing (let it proceed)
     }
     private fun updateReasoningButtonAppearance() {
         // Use .value to get the current state from LiveData

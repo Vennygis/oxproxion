@@ -1,0 +1,6 @@
+Platform & Performance Upgrades
+•	Target Android 17 (API 37): Bumped both compileSdk and targetSdk to 37 to natively support modern device optimizations.
+•	Under-the-Hood Performance Boost: Bumping the target SDK unlocks Android 17’s brand-new lock-free MessageQueue implementation on the main thread. This significantly reduces dropped frames, layout stutter, and UI lag when dealing with rapid, heavy background tasks (such as processing and rendering streaming LLM tokens).
+•	Enhanced Privacy Requirements (ACCESS_LOCAL_NETWORK):
+•	Due to stricter local network security enforcement in Android 17, the app will now explicitly request the new ACCESS_LOCAL_NETWORK runtime permission the first time you attempt to connect to a LAN-hosted model.
+•	Note for users on older Android versions: If your device is running Android 16 or below, this permission tag is completely ignored by the system, and your local network traffic will continue to function seamlessly without any runtime prompts.

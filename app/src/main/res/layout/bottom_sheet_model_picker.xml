@@ -214,7 +214,7 @@
             android:layout_margin="16dp"
             android:contentDescription="Add Model"
             android:src="@drawable/ic_addmod"
-            app:backgroundTint="?attr/colorPrimary"
+            app:backgroundTint="@color/chestnut"
             app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

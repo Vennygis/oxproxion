@@ -20,14 +20,14 @@ configurations.all {
 }
 android {
     namespace = "io.github.stardomains3.oxproxion"
-    compileSdk = 36
+    compileSdk = 37
 
     defaultConfig {
         applicationId = "io.github.stardomains3.oxproxion"
         minSdk = 31
-        targetSdk = 36
-        versionCode = 210
-        versionName = "2.1.100"
+        targetSdk = 37
+        versionCode = 211
+        versionName = "2.1.101"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
