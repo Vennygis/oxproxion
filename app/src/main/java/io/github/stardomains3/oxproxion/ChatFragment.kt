@@ -1368,6 +1368,9 @@ class ChatFragment : Fragment(R.layout.fragment_chat), OnKeyboardShortcutListene
 
             }
         })
+        if (viewModel.activeModelIsLan()) {
+            checkLocalNetworkPermission()
+        }
         // end onviewcreated
     }
 

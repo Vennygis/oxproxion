@@ -1,10 +1,14 @@
 package io.github.stardomains3.oxproxion
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -12,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.appbar.MaterialToolbar
 import kotlinx.coroutines.launch
+import kotlin.time.Duration.Companion.milliseconds
 
 class LanModelsFragment : Fragment() {
 
@@ -19,6 +24,23 @@ class LanModelsFragment : Fragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LanModelsAdapter
     private var allModels: List<LlmModel> = emptyList()
+
+    // NEW: Permission Launcher for Android 17+ Local Network
+    private val localNetworkPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted) {
+            // Permission granted! Proceed with fetching models.
+            viewModel.startLanModelsFetch()
+        } else {
+            // Permission denied. Explain to the user.
+            Toast.makeText(
+                requireContext(),
+                "Local Network permission is required to fetch models from your LAN server.",
+                Toast.LENGTH_LONG
+            ).show()
+        }
+    }
 
     companion object {
         const val TAG = "LanModelsFragment"
@@ -58,7 +80,8 @@ class LanModelsFragment : Fragment() {
         toolbar.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.action_refresh_models -> {
-                    viewModel.startLanModelsFetch()
+                    // NEW: Check permission before manual refresh
+                    checkLocalNetworkAndFetch()
                     true
                 }
                 else -> false
@@ -112,8 +135,29 @@ class LanModelsFragment : Fragment() {
             }
         }
 
-        // START FETCH
-        viewModel.startLanModelsFetch()
+        // START FETCH (with permission check)
+        checkLocalNetworkAndFetch()
+    }
+
+    // NEW: Optimized helper function to check permission before fetching
+    private fun checkLocalNetworkAndFetch() {
+        // Android 17 (API 37) requires explicit local network permission
+        if (Build.VERSION.SDK_INT >= 37) {
+            if (ContextCompat.checkSelfPermission(
+                    requireContext(),
+                    "android.permission.ACCESS_LOCAL_NETWORK"
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                // Already granted, fetch normally
+                viewModel.startLanModelsFetch()
+            } else {
+                // Ask the user for permission
+                localNetworkPermissionLauncher.launch("android.permission.ACCESS_LOCAL_NETWORK")
+            }
+        } else {
+            // Pre-Android 17, standard INTERNET permission is enough
+            viewModel.startLanModelsFetch()
+        }
     }
 
     private fun addModel(model: LlmModel) {
@@ -142,7 +186,7 @@ class LanModelsFragment : Fragment() {
             } catch (e: Exception) {
                 Toast.makeText(context, "Failed to load: ${e.message}", Toast.LENGTH_SHORT).show()
             } finally {
-                kotlinx.coroutines.delay(1600)
+                kotlinx.coroutines.delay(1600.milliseconds)
                 // Hide spinner and fetch updated list
                 adapter.setLoadingState(model.apiIdentifier, false)
 
@@ -166,7 +210,7 @@ class LanModelsFragment : Fragment() {
             } catch (e: Exception) {
                 Toast.makeText(context, "Failed to unload: ${e.message}", Toast.LENGTH_SHORT).show()
             } finally {
-                kotlinx.coroutines.delay(1600)
+                kotlinx.coroutines.delay(1600.milliseconds)
                 // Hide spinner and fetch updated list
                 adapter.setLoadingState(model.apiIdentifier, false)
                 viewModel.startLanModelsFetch()

@@ -1,0 +1,1 @@
+- Optimized permission check for devices using Android 17 to ask for local network access permission so as to use locally hosted models.
